@@ -13,6 +13,7 @@
   --color-text-muted-light: #64748B;
   --color-text-body-muted: #475569;
   --color-white: #FFFFFF;
+  --color-accent-on-light: #0891B2;
 
   /* Typography */
   --font-heading: 'Poppins', sans-serif;
@@ -106,7 +107,7 @@ ul {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 2.5px;
-  color: var(--color-accent-primary);
+  color: var(--color-accent-on-light);
   margin-bottom: var(--space-md);
 }
 
@@ -333,20 +334,24 @@ ul {
   margin-top: var(--space-xs);
 }
 
-.hero-secondary-link {
-  font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--color-text-muted-light);
-  padding: var(--space-xs) 0;
+.btn-secondary {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-text-dark-bg);
+  background: transparent;
+  border: 1px solid var(--color-text-muted-dark);
+  padding: 14px var(--space-lg);
+  border-radius: 8px;
   min-height: 48px;
-  display: flex;
-  align-items: center;
-  transition: color var(--transition-fast);
+  text-align: center;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
 }
 
-.hero-secondary-link:hover {
+.btn-secondary:hover {
+  border-color: var(--color-accent-primary);
   color: var(--color-accent-primary);
-  text-decoration: underline;
 }
 
 /* Hero Photo (hidden on mobile by default, shown on desktop) */
@@ -415,7 +420,7 @@ ul {
 .project-card {
   background-color: var(--color-white);
   border-radius: 8px;
-  border-left: 3px solid var(--color-accent-primary);
+  border-left: 3px solid var(--color-accent-on-light);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -474,9 +479,9 @@ ul {
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 500;
-  color: var(--color-accent-primary);
-  background-color: rgba(34, 211, 238, 0.08);
-  border: 1px solid rgba(34, 211, 238, 0.2);
+  color: var(--color-accent-on-light);
+  background-color: rgba(8, 145, 178, 0.08);
+  border: 1px solid rgba(8, 145, 178, 0.2);
   border-radius: 6px;
   padding: 4px 10px;
   line-height: 1.4;
@@ -489,7 +494,7 @@ ul {
   gap: 6px;
   font-family: var(--font-body);
   font-size: 14px;
-  color: var(--color-accent-primary);
+  color: var(--color-accent-on-light);
   margin-top: var(--space-xs);
 }
 
@@ -525,7 +530,7 @@ ul {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--color-accent-primary);
+  color: var(--color-accent-on-light);
   margin-top: var(--space-md);
   margin-bottom: var(--space-xs);
 }
@@ -543,6 +548,11 @@ ul {
 .about {
   background-color: var(--color-white);
   padding: var(--space-3xl) 0 var(--space-3xl);
+}
+
+.about .section-label {
+  font-size: 15px;
+  margin-bottom: var(--space-lg);
 }
 
 .about-content {
@@ -580,7 +590,7 @@ ul {
 .recommendation {
   margin-top: var(--space-xl);
   padding-left: var(--space-md);
-  border-left: 3px solid var(--color-accent-primary);
+  border-left: 3px solid var(--color-accent-on-light);
 }
 
 .recommendation p {
@@ -597,7 +607,7 @@ ul {
   font-style: normal;
   font-family: var(--font-body);
   font-size: 14px;
-  color: var(--color-accent-primary);
+  color: var(--color-accent-on-light);
   margin-top: var(--space-xs);
 }
 
@@ -834,7 +844,7 @@ ul {
     margin-right: auto;
     text-align: center;
     border-left: none;
-    border-top: 3px solid var(--color-accent-primary);
+    border-top: 3px solid var(--color-accent-on-light);
     padding-left: 0;
     padding-top: var(--space-md);
   }

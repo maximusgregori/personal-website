@@ -72,7 +72,11 @@
           <img src="images/headshot.webp" alt="Max Gregori" class="hero-headshot" loading="lazy">
         </div>
       </div>
-      <div class="hero-fade"></div>
+      <div class="section-wave section-wave--hero" aria-hidden="true">
+        <svg viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,24 C360,56 1080,56 1440,24 L1440,48 L0,48 Z" fill="#F4F4F4"/>
+        </svg>
+      </div>
     </section>
 
     <!-- Section 2: Featured Projects -->
@@ -90,9 +94,8 @@
                 <p class="card-question">What happens when a business needs something that doesn't exist?</p>
                 <h3 class="card-title">Building a Healthcare IT Service Line from Zero</h3>
                 <p class="card-summary">Physicians don't want to troubleshoot their own IT. They want someone on site who handles it, so they can focus on patients. That service didn't exist at Integrity Healthcare when I joined, so I built it. It became the company's largest revenue line.</p>
-                <div class="card-metric">
-                  <span class="metric-value">#1 revenue line</span>
-                  <span class="metric-label">at Integrity Healthcare</span>
+                <div class="metric-pills">
+                  <span class="metric-pill">#1 revenue line at Integrity Healthcare</span>
                 </div>
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
@@ -116,12 +119,9 @@
                 <p class="card-question">What happens when that business outgrows its own operations?</p>
                 <h3 class="card-title">Automating the Operations I Built</h3>
                 <p class="card-summary">The field services practice grew fast enough that the coordination behind it couldn't keep up. Onboarding, scheduling, and invoicing were all bottlenecked. I built an AI agent to automate that operational layer so the team could stay focused on the actual work.</p>
-                <div class="card-metric">
-                  <span class="metric-value" data-count="70" data-suffix="%+">70%+</span>
-                  <span class="metric-label">efficiency gain</span>
-                  <span class="metric-separator">·</span>
-                  <span class="metric-value" data-count="30" data-suffix="%+">30%+</span>
-                  <span class="metric-label">pipeline growth</span>
+                <div class="metric-pills">
+                  <span class="metric-pill">70%+ efficiency gain</span>
+                  <span class="metric-pill">30%+ pipeline growth</span>
                 </div>
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
@@ -145,12 +145,9 @@
                 <p class="card-question">What happens when an entire team is drowning in spreadsheets?</p>
                 <h3 class="card-title">Replacing Scattered Workflows with an AI-Powered Web App</h3>
                 <p class="card-summary">A healthcare software company expanding fast across the US market had its implementation tracking split between Excel files, OneDrive folders, email threads, and PowerPoint decks. I built a web application that brought all of it into one place, with AI-assisted coordination built in.</p>
-                <div class="card-metric">
-                  <span class="metric-value" data-count="20" data-suffix="%+">20%+</span>
-                  <span class="metric-label">implementation efficiency gain</span>
-                  <span class="metric-separator">·</span>
-                  <span class="metric-value">Active</span>
-                  <span class="metric-label">Constance IT client engagement</span>
+                <div class="metric-pills">
+                  <span class="metric-pill">20%+ implementation efficiency gain</span>
+                  <span class="metric-pill">Active Constance IT engagement</span>
                 </div>
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
@@ -174,8 +171,8 @@
                 <p class="card-question">When I want to understand something, I build it.</p>
                 <h3 class="card-title">Automating a Full Creative Pipeline End-to-End</h3>
                 <p class="card-summary">AI-generated content was everywhere, and I wanted to know what it actually takes to go from a one-line idea to a publish-ready video. So I built the full pipeline: script, voiceover, generated scenes, synced captions, published.</p>
-                <div class="card-metric">
-                  <span class="metric-value metric-text">Built with n8n · Claude API · ElevenLabs · Veo 3.1 · Kling 3.0 · Creatomate</span>
+                <div class="metric-pills">
+                  <span class="metric-pill">n8n · Claude API · ElevenLabs · Veo 3.1 · Kling 3.0 · Creatomate</span>
                 </div>
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
@@ -199,9 +196,8 @@
                 <p class="card-question">When I want to understand something, I build it.</p>
                 <h3 class="card-title">An Autonomous Trading System Built from First Principles</h3>
                 <p class="card-summary">Prediction market bots were supposedly easy money. That didn't add up to me. I wanted to find out what it actually takes, starting from how weather data is measured, where it's hosted, and how to price temperature markets with real statistical models.</p>
-                <div class="card-metric">
-                  <span class="metric-value">Processes <span data-count="200" data-suffix="+">200+</span> markets daily</span>
-                  <span class="metric-label">across <span data-count="20">20</span> US cities on AWS</span>
+                <div class="metric-pills">
+                  <span class="metric-pill">200+ markets daily · 20 US cities · AWS</span>
                 </div>
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
@@ -225,8 +221,8 @@
                 <p class="card-question">When the people I care about have a problem, I build the fix.</p>
                 <h3 class="card-title">An AI Recipe App, from Concept to App Store</h3>
                 <p class="card-summary">My girlfriend and my mom both love cooking, but their recipes were scattered across paper, social media, notes apps, and cookbooks. I'd never built an iOS app before. I built one anyway.</p>
-                <div class="card-metric">
-                  <span class="metric-value metric-text">Concept to App Store · built solo</span>
+                <div class="metric-pills">
+                  <span class="metric-pill">Concept to App Store · built solo</span>
                 </div>
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
@@ -272,7 +268,11 @@
 
     <!-- Section 4: Contact / Footer -->
     <section class="contact" id="contact">
-      <div class="contact-fade"></div>
+      <div class="section-wave section-wave--contact" aria-hidden="true">
+        <svg viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,24 C360,-8 1080,-8 1440,24 L1440,48 L0,48 Z" fill="#0F172A"/>
+        </svg>
+      </div>
       <div class="section-container contact-content">
         <h2 class="contact-headline" data-aos="fade-up">Let's Talk</h2>
         <p class="contact-subtext" data-aos="fade-up" data-aos-delay="100">Whether you're a recruiter, a potential collaborator, or just want to say hello, I'd like to hear from you.</p>

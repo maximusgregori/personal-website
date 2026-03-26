@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Max Gregori — Systems Builder, Problem Solver</title>
+  <meta name="description" content="Max Gregori builds systems that solve operational problems. Projects, background, and contact.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Max Gregori — Systems Builder, Problem Solver">
+  <meta property="og:description" content="Max Gregori builds systems that solve operational problems. Projects, background, and contact.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://constanceit.github.io/personal-website/">
+
+  <!-- Preload Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Poppins:wght@300;600;700&display=swap" rel="stylesheet">
+
+  <!-- AOS CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Navigation -->
+  <header class="site-nav" id="site-nav" aria-label="Main navigation">
+    <nav class="nav-bar">
+      <a href="#hero" class="nav-logo">Max Gregori</a>
+      <ul class="nav-links" role="list">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Mobile Nav Overlay -->
+  <div class="mobile-nav-overlay" id="mobile-nav" role="dialog" aria-label="Navigation menu" aria-hidden="true">
+    <button class="mobile-nav-close" aria-label="Close navigation menu">&times;</button>
+    <nav>
+      <ul class="mobile-nav-links" role="list">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <main>
+
+    <!-- Section 1: Hero -->
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <p class="hero-name" data-aos="fade-up" data-aos-delay="200">Max Gregori</p>
+          <h1 class="hero-headline" data-aos="fade-up" data-aos-delay="400">I Build Systems That Solve Problems Others Work Around</h1>
+          <p class="hero-subheadline" data-aos="fade-up" data-aos-delay="600">I find where processes break down, build what fixes them, and scale the solution.</p>
+          <div class="hero-actions" data-aos="fade-up" data-aos-delay="800">
+            <a href="#work" class="btn-primary">See My Work</a>
+            <a href="#contact" class="hero-secondary-link">Get in Touch</a>
+          </div>
+        </div>
+        <div class="hero-photo">
+          <img src="images/headshot.webp" alt="Max Gregori" class="hero-headshot" loading="lazy">
+        </div>
+      </div>
+      <div class="hero-fade"></div>
+    </section>
+
+    <!-- Section 2: Featured Projects -->
+    <section class="projects" id="work">
+      <div class="section-container">
+        <h2 class="section-label" data-aos="fade-up">What I Build</h2>
+        <p class="section-intro" data-aos="fade-up" data-aos-delay="100">The best way to understand what's possible is to build it. Every project here started with a real problem, and my answer was always the same: go build the thing and find out.</p>
+
+        <div class="project-cards">
+
+          <!-- Project 1 -->
+          <article class="project-card" data-aos="fade-up" data-aos-delay="0">
+            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Building a Healthcare IT Service Line from Zero">
+              <div class="card-collapsed">
+                <p class="card-question">What happens when a business needs something that doesn't exist?</p>
+                <h3 class="card-title">Building a Healthcare IT Service Line from Zero</h3>
+                <p class="card-summary">Physicians don't want to troubleshoot their own IT. They want someone on site who handles it, so they can focus on patients. That service didn't exist at Integrity Healthcare when I joined, so I built it. It became the company's largest revenue line.</p>
+                <div class="card-metric">
+                  <span class="metric-value">#1 revenue line</span>
+                  <span class="metric-label">at Integrity Healthcare</span>
+                </div>
+                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+              </div>
+            </button>
+            <div class="card-expanded" aria-hidden="true">
+              <div class="case-study">
+                <p class="case-label">The problem</p>
+                <p>Outpatient surgery centers had a consistent, unaddressed need. Physicians don't want to deal with broken hardware, network outages, or software lockouts. They want IT to work, and when it doesn't, they want someone physically there to fix it. When I joined Integrity Healthcare as Director of Business Development, the company was an IT staffing agency with no on-site capability. The gap was obvious.</p>
+                <p class="case-label">What I built</p>
+                <p>A full IT field services practice, grounded in one idea: be the person on site who makes IT someone else's problem. Network closet construction, Cisco rack-and-stack, structured cabling, fiber runs, server configuration. The scope covered the full facility lifecycle, from de novo buildouts through ongoing managed services.</p>
+                <p class="case-label">The outcome</p>
+                <p>It grew into Integrity's largest revenue-generating service line, serving over 100 healthcare facilities.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project-card" data-aos="fade-up" data-aos-delay="100">
+            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Automating the Operations I Built">
+              <div class="card-collapsed">
+                <p class="card-question">What happens when that business outgrows its own operations?</p>
+                <h3 class="card-title">Automating the Operations I Built</h3>
+                <p class="card-summary">The field services practice grew fast enough that the coordination behind it couldn't keep up. Onboarding, scheduling, and invoicing were all bottlenecked. I built an AI agent to automate that operational layer so the team could stay focused on the actual work.</p>
+                <div class="card-metric">
+                  <span class="metric-value" data-count="70" data-suffix="%+">70%+</span>
+                  <span class="metric-label">efficiency gain</span>
+                  <span class="metric-separator">·</span>
+                  <span class="metric-value" data-count="30" data-suffix="%+">30%+</span>
+                  <span class="metric-label">pipeline growth</span>
+                </div>
+                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+              </div>
+            </button>
+            <div class="card-expanded" aria-hidden="true">
+              <div class="case-study">
+                <p class="case-label">The problem</p>
+                <p>The field services practice was growing, and that growth created a new problem. Too many clients onboarding at the same time, too many jobs competing for the same technicians, and no clean way to see who was available when. The service itself was solid. The coordination behind it wasn't keeping pace, and that was starting to affect quality.</p>
+                <p class="case-label">What I built</p>
+                <p>An AI agent that handles client intake, job scheduling, and invoicing across the field services operation. It matches technicians to jobs based on availability, triggers invoices on completion, and keeps the pipeline organized without someone manually tracking every moving piece.</p>
+                <p class="case-label">The outcome</p>
+                <p>Operational efficiency went up by over 70%, and the job pipeline grew by over 30%. The bigger win was that the team stopped spending time on logistics and went back to spending it on the work itself.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project-card" data-aos="fade-up" data-aos-delay="200">
+            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Replacing Scattered Workflows with an AI-Powered Web App">
+              <div class="card-collapsed">
+                <p class="card-question">What happens when an entire team is drowning in spreadsheets?</p>
+                <h3 class="card-title">Replacing Scattered Workflows with an AI-Powered Web App</h3>
+                <p class="card-summary">A healthcare software company expanding fast across the US market had its implementation tracking split between Excel files, OneDrive folders, email threads, and PowerPoint decks. I built a web application that brought all of it into one place, with AI-assisted coordination built in.</p>
+                <div class="card-metric">
+                  <span class="metric-value" data-count="20" data-suffix="%+">20%+</span>
+                  <span class="metric-label">implementation efficiency gain</span>
+                  <span class="metric-separator">·</span>
+                  <span class="metric-value">Active</span>
+                  <span class="metric-label">Constance IT client engagement</span>
+                </div>
+                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+              </div>
+            </button>
+            <div class="card-expanded" aria-hidden="true">
+              <div class="case-study">
+                <p class="case-label">The problem</p>
+                <p>MediReport is a European cardiovascular information system that I helped bring into the American healthcare market. As they started implementing across outpatient OBLs, ASCs, and clinics doing cardiovascular procedures, the project management side couldn't keep up. Tracking was spread across Excel spreadsheets, multiple OneDrive instances, email chains, and weekly PowerPoint status decks. Different people were updating different files. Version conflicts were constant. There was no single source of truth, and bottlenecks were showing up at every stage.</p>
+                <p class="case-label">What I built</p>
+                <p>A React + Firebase web application that replaced all of those disconnected systems with one tool. It includes customizable implementation plans per site, role-based access for internal teams and customers, and an AI assistant that lets project managers log updates in plain English. Someone can say "I had a call with this vendor, there's going to be a delay interfacing these modalities," and the AI routes the information to the right fields, flags whether the task needs clinical or engineering involvement, tracks deadlines, and sends reminders.</p>
+                <p class="case-label">The outcome</p>
+                <p>Implementation efficiency improved by over 20%. That might sound modest, but these implementations typically take 8 to 16 weeks. Shaving 20% off a three- or four-month rollout means weeks of time recovered per site. The MediReport team now runs all of its US implementations through this single platform, and it's an active Constance IT engagement.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="project-card" data-aos="fade-up" data-aos-delay="300">
+            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Automating a Full Creative Pipeline End-to-End">
+              <div class="card-collapsed">
+                <p class="card-question">When I want to understand something, I build it.</p>
+                <h3 class="card-title">Automating a Full Creative Pipeline End-to-End</h3>
+                <p class="card-summary">AI-generated content was everywhere, and I wanted to know what it actually takes to go from a one-line idea to a publish-ready video. So I built the full pipeline: script, voiceover, generated scenes, synced captions, published.</p>
+                <div class="card-metric">
+                  <span class="metric-value metric-text">Built with n8n · Claude API · ElevenLabs · Veo 3.1 · Kling 3.0 · Creatomate</span>
+                </div>
+                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+              </div>
+            </button>
+            <div class="card-expanded" aria-hidden="true">
+              <div class="case-study">
+                <p class="case-label">The problem</p>
+                <p>AI-generated content was taking off, and most of the conversation around it felt like hype. My girlfriend runs a wellness brand with regular sponsorship offers, so I had a real use case ready. But before building anything for her, I wanted to understand every step of the pipeline myself.</p>
+                <p class="case-label">What I built</p>
+                <p>The full pipeline from scratch, starting with automated YouTube content as my test case. You give it a one-line premise, and the system generates a scene-by-scene script, produces voiceover narration per scene, generates AI-animated video clips, and assembles everything into a finished video with word-synced captions, ready to publish. I built it on n8n for workflow orchestration, Claude API for script generation, ElevenLabs for voice synthesis, Veo 3.1 and Kling 3.0 for video generation, Creatomate for final assembly, and Blotato for multi-platform publishing.</p>
+                <p class="case-label">The outcome</p>
+                <p>Once I understood every step, I adapted the pipeline for my girlfriend's brand. She's now producing and publishing AI-assisted marketing content at a pace that wasn't realistic before. For me, the value was less about the pipeline itself and more about developing a clear picture of what AI content creation can actually do and where it falls short.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 5 -->
+          <article class="project-card" data-aos="fade-up" data-aos-delay="400">
+            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: An Autonomous Trading System Built from First Principles">
+              <div class="card-collapsed">
+                <p class="card-question">When I want to understand something, I build it.</p>
+                <h3 class="card-title">An Autonomous Trading System Built from First Principles</h3>
+                <p class="card-summary">Prediction market bots were supposedly easy money. That didn't add up to me. I wanted to find out what it actually takes, starting from how weather data is measured, where it's hosted, and how to price temperature markets with real statistical models.</p>
+                <div class="card-metric">
+                  <span class="metric-value">Processes <span data-count="200" data-suffix="+">200+</span> markets daily</span>
+                  <span class="metric-label">across <span data-count="20">20</span> US cities on AWS</span>
+                </div>
+                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+              </div>
+            </button>
+            <div class="card-expanded" aria-hidden="true">
+              <div class="case-study">
+                <p class="case-label">The problem</p>
+                <p>Prediction markets were taking off and people were claiming you could set up a trading bot overnight. I wanted to find out for myself what it actually takes to build one of these and whether there's a real edge behind the noise.</p>
+                <p class="case-label">What I built</p>
+                <p>I started from first principles. I researched how weather data is measured, where weather stations source their information, and how the data gets produced and hosted. I selected an AWS data center co-located in the same cluster as NOAA's weather data to minimize latency. Then I built the trading system: it ingests real-time NWP ensemble forecast data from NOAA, constructs empirical probability distributions with station-level bias correction, and executes trades on prediction exchanges with built-in risk controls like exposure ramps, drawdown circuit breakers, and per-market caps. It runs autonomously on AWS EC2, processing over 200 markets per cycle across 20 US cities, and sends me automated performance reports.</p>
+                <p class="case-label">The outcome</p>
+                <p>The system is fully operational. More useful to me, though, is the understanding I built along the way. The data engineering, the statistical modeling, the infrastructure decisions. The gap between the hype and the reality is significant, and the only way I could have known that was by building the thing.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 6 -->
+          <article class="project-card" data-aos="fade-up" data-aos-delay="500">
+            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: An AI Recipe App, from Concept to App Store">
+              <div class="card-collapsed">
+                <p class="card-question">When the people I care about have a problem, I build the fix.</p>
+                <h3 class="card-title">An AI Recipe App, from Concept to App Store</h3>
+                <p class="card-summary">My girlfriend and my mom both love cooking, but their recipes were scattered across paper, social media, notes apps, and cookbooks. I'd never built an iOS app before. I built one anyway.</p>
+                <div class="card-metric">
+                  <span class="metric-value metric-text">Concept to App Store · built solo</span>
+                </div>
+                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+              </div>
+            </button>
+            <div class="card-expanded" aria-hidden="true">
+              <div class="case-study">
+                <p class="case-label">The problem</p>
+                <p>The two people in my life who cook the most had recipes saved in a dozen different places. Handwritten notes, Instagram saves, screenshots, bookmarked websites, physical cookbooks. They could never find what they needed when they needed it.</p>
+                <p class="case-label">What I built</p>
+                <p>Bella, an AI-powered recipe manager for iOS. You can import a recipe from anywhere: take a photo of a handwritten card, paste a web link, upload a screenshot. The AI extracts and organizes the recipe data, formats it cleanly, and saves it to your account. I'd never done iOS development before this project. I took it from concept to App Store launch on my own.</p>
+                <p class="case-label">The outcome</p>
+                <p>It's live on the App Store and used by my girlfriend, my mom, their family, and friends. It's the simplest project here, but it might be the most telling. I saw a problem, learned a new platform, and shipped a real product.</p>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: About -->
+    <section class="about" id="about">
+      <div class="section-container">
+        <h2 class="section-label" data-aos="fade-up">About Me</h2>
+        <div class="about-content">
+          <div class="about-photo" data-aos="fade-up" data-aos-delay="100">
+            <img src="images/headshot.webp" alt="Max Gregori" class="about-headshot" loading="lazy">
+          </div>
+          <div class="about-text">
+            <p data-aos="fade-up" data-aos-delay="150">I was born in Germany, raised in South Africa for six years, and moved to the United States, where I went to high school in New York and studied Management and Entrepreneurship at UT Austin's McCombs School of Business.</p>
+            <p data-aos="fade-up" data-aos-delay="200">Growing up across three continents shaped how I think about problems. You develop an instinct for how different people experience the same situation, and you get comfortable operating in places where nothing feels familiar.</p>
+            <p data-aos="fade-up" data-aos-delay="250">I co-founded my first company, a digital marketing agency, while still in school. That led to growth roles at startups, two summers in investment banking in New York, and eventually a deep dive into healthcare IT, where I managed large-scale projects and built service lines from scratch. The consistent thread across all of it was that the biggest problems I kept running into weren't technical. They were operational.</p>
+            <p data-aos="fade-up" data-aos-delay="300">Today I run Constance IT. I build AI-powered workflow automation and managed IT services for small and medium-sized businesses. Enterprises have their consultancies and custom AI tools. Most SMBs don't have access to any of that. That's what I'm working on.</p>
+            <p data-aos="fade-up" data-aos-delay="350">When I'm not building, I'm watching Formula One. I picked that up around four years old, watching races in my grandparents' basement in Germany. Some things stay with you.</p>
+          </div>
+        </div>
+        <blockquote class="recommendation" data-aos="fade-up" data-aos-delay="400">
+          <p>"Max doesn't just identify opportunities. He creates them."</p>
+          <cite>Dale Calvin, CEO, Integrity Healthcare IT Solutions</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- Section 4: Contact / Footer -->
+    <section class="contact" id="contact">
+      <div class="contact-fade"></div>
+      <div class="section-container contact-content">
+        <h2 class="contact-headline" data-aos="fade-up">Let's Talk</h2>
+        <p class="contact-subtext" data-aos="fade-up" data-aos-delay="100">Whether you're a recruiter, a potential collaborator, or just want to say hello, I'd like to hear from you.</p>
+        <a href="mailto:max.c.gregori@gmail.com" class="btn-primary contact-email" data-aos="fade-up" data-aos-delay="200">max.c.gregori@gmail.com</a>
+        <div class="contact-links" data-aos="fade-up" data-aos-delay="300">
+          <a href="https://linkedin.com/in/maxgregori" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://constanceit.com" target="_blank" rel="noopener noreferrer">Constance IT</a>
+        </div>
+      </div>
+      <footer class="site-footer">
+        <p>Built by Max Gregori · 2026</p>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Site JS -->
+  <script src="js/main.js"></script>
+</body>
+</html>

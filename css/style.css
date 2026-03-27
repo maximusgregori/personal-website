@@ -108,7 +108,6 @@ ul { list-style: none; }
   color: var(--color-text-dark-bg);
 }
 
-.section-intro .line { display: block; overflow: hidden; }
 
 /* ============================================
    Buttons
@@ -567,8 +566,8 @@ ul { list-style: none; }
 .journey-map .connection-line {
   fill: none;
   stroke: var(--color-accent-primary);
-  stroke-opacity: 0.4;
-  stroke-width: 1.5;
+  stroke-opacity: 0.5;
+  stroke-width: 2;
   filter: drop-shadow(0 0 3px rgba(34, 211, 238, 0.3));
 }
 
@@ -594,14 +593,14 @@ ul { list-style: none; }
 .journey-map .map-label .label-city {
   fill: var(--color-text-dark-bg);
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .journey-map .map-label .label-detail {
   fill: var(--color-text-muted-dark);
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 10px;
 }
 
 /* Mobile timeline */
@@ -924,7 +923,7 @@ ul { list-style: none; }
   .journey-timeline { display: none; }
   .journey-map {
     display: flex;
-    min-height: 500px;
+    min-height: 600px;
     width: 100%;
     position: relative;
   }

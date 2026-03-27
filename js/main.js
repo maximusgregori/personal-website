@@ -16,7 +16,7 @@
   var journeyStops = [
     { city: 'Hamburg', country: 'Germany', lat: 53.55, lng: 9.99, label: 'Born', age: '0' },
     { city: 'Düsseldorf', country: 'Germany', lat: 51.23, lng: 6.78, label: 'Early childhood', age: '1–8' },
-    { city: 'Cape Town', country: 'South Africa', lat: -33.92, lng: 18.42, label: 'Six years in South Africa', age: '9–14' },
+    { city: 'Cape Town', country: 'South Africa', lat: -33.92, lng: 18.42, label: 'Five years in South Africa', age: '9–14' },
     { city: 'New York City', country: 'USA', lat: 40.71, lng: -74.01, label: 'The Browning School, 8th grade', age: '14' },
     { city: 'Boca Raton', country: 'USA', lat: 26.36, lng: -80.08, label: "Saint Andrew's School", age: '15–16' },
     { city: 'New York City', country: 'USA', lat: 40.71, lng: -74.01, label: 'The Browning School, junior & senior year', age: '17–18' },
@@ -161,62 +161,12 @@
         .to('.hero-actions', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.2');
     }
 
-    /* Hero photo parallax (desktop) */
-    if (window.innerWidth >= 768) {
-      gsap.to('.hero-headshot', {
-        yPercent: -15, ease: 'none',
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-      });
-    }
-
     /* Section labels reveal */
     gsap.utils.toArray('.section-label').forEach(function (label) {
       gsap.from(label, {
         y: 20, opacity: 0, duration: 0.5, ease: 'power2.out',
         scrollTrigger: { trigger: label, start: 'top 85%' }
       });
-    });
-
-    /* Section intro line reveal */
-    if (typeof SplitType !== 'undefined') {
-      document.querySelectorAll('.section-intro').forEach(function (intro) {
-        var split = new SplitType(intro, { types: 'lines' });
-        gsap.from(split.lines, {
-          y: 30, opacity: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1,
-          scrollTrigger: { trigger: intro, start: 'top 85%' }
-        });
-      });
-    }
-
-    /* Project cards stagger */
-    gsap.from('.project-card', {
-      y: 60, opacity: 0, duration: 0.8, ease: 'power2.out', stagger: 0.15,
-      clearProps: 'transform,opacity',
-      scrollTrigger: { trigger: '.project-cards', start: 'top 80%', toggleActions: 'play none none none' }
-    });
-
-    /* Journey timeline stagger (mobile) */
-    gsap.from('.timeline-stop', {
-      y: 30, opacity: 0, duration: 0.5, ease: 'power2.out', stagger: 0.1,
-      scrollTrigger: { trigger: '.journey-timeline', start: 'top 80%' }
-    });
-
-    /* About photo reveal */
-    gsap.from('.about-headshot', {
-      clipPath: 'inset(100% 0 0 0)', duration: 1, ease: 'power3.inOut',
-      scrollTrigger: { trigger: '.about-photo', start: 'top 75%' }
-    });
-
-    /* About paragraph stagger */
-    gsap.from('.about-text p', {
-      y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out',
-      scrollTrigger: { trigger: '.about-text', start: 'top 80%' }
-    });
-
-    /* Testimonial cards stagger */
-    gsap.from('.testimonial-card', {
-      y: 40, opacity: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1,
-      scrollTrigger: { trigger: '.testimonial-cards', start: 'top 80%' }
     });
 
     /* Contact headline char reveal */
@@ -301,7 +251,7 @@
             console.log('[Map] TopoJSON loaded, objects:', Object.keys(worldData.objects));
 
             var width = Math.min(containerWidth, 1000);
-            var height = width * 0.5;
+            var height = width * 0.65;
 
             d3.select('.journey-map svg').remove();
 
@@ -318,8 +268,22 @@
 
             console.log('[Map] SVG created');
 
+            var journeyBounds = {
+              type: 'Feature',
+              geometry: {
+                type: 'Polygon',
+                coordinates: [[
+                  [-110, -45],
+                  [30, -45],
+                  [30, 60],
+                  [-110, 60],
+                  [-110, -45]
+                ]]
+              }
+            };
+
             var projection = d3.geoNaturalEarth1()
-              .fitExtent([[20, 20], [width - 20, height - 20]], { type: 'Sphere' })
+              .fitExtent([[40, 20], [width - 40, height - 20]], journeyBounds)
               .precision(0.2);
 
             var pathGen = d3.geoPath(projection);
@@ -369,32 +333,45 @@
               var g = pinsGroup.append('g').attr('transform', 'translate(' + coords[0] + ',' + coords[1] + ')');
 
               if (idx === journeyStops.length - 1) {
-                g.append('circle').attr('class', 'pin-pulse').attr('r', 10).style('opacity', 0);
+                g.append('circle').attr('class', 'pin-pulse').attr('r', 12).style('opacity', 0);
               }
 
-              g.append('circle').attr('class', 'pin').attr('r', 5).style('opacity', 0);
+              g.append('circle').attr('class', 'pin').attr('r', 6).style('opacity', 0);
               pinElements.push(g.node());
             });
 
             var labelsGroup = svg.append('g');
             var labelElements = [];
 
+            var labelOffsets = [
+              [14, -20],     // 0: Hamburg
+              [-145, 14],    // 1: Düsseldorf
+              [14, -20],     // 2: Cape Town
+              [14, -30],     // 3: NYC (8th grade)
+              [-155, -10],   // 4: Boca Raton
+              [14, 14],      // 5: NYC (jr/sr year)
+              [-165, 20],    // 6: Austin (UT)
+              [14, -25],     // 7: Dallas
+              [-165, -10]    // 8: Austin (Constance)
+            ];
+
             journeyStops.forEach(function (stop, idx) {
               var coords = projection([stop.lng, stop.lat]);
               if (!coords) return;
 
-              var offsetX = 12;
-              var offsetY = -8;
-              if (idx % 2 === 1) { offsetX = -120; }
+              var offsets = labelOffsets[idx] || [14, -8];
+              var cityText = stop.city;
+              var detailText = stop.label;
+              var rectWidth = Math.max(Math.max(cityText.length, detailText.length) * 7 + 16, 100);
 
               var labelG = labelsGroup.append('g')
                 .attr('class', 'map-label')
-                .attr('transform', 'translate(' + (coords[0] + offsetX) + ',' + (coords[1] + offsetY) + ')')
+                .attr('transform', 'translate(' + (coords[0] + offsets[0]) + ',' + (coords[1] + offsets[1]) + ')')
                 .style('opacity', 0);
 
-              labelG.append('rect').attr('width', 110).attr('height', 32).attr('y', -16);
-              labelG.append('text').attr('class', 'label-city').attr('x', 8).attr('y', -2).text(stop.city);
-              labelG.append('text').attr('class', 'label-detail').attr('x', 8).attr('y', 10).text(stop.label);
+              labelG.append('rect').attr('width', rectWidth).attr('height', 36).attr('y', -18);
+              labelG.append('text').attr('class', 'label-city').attr('x', 8).attr('y', -3).text(cityText);
+              labelG.append('text').attr('class', 'label-detail').attr('x', 8).attr('y', 12).text(detailText);
 
               labelElements.push(labelG.node());
             });

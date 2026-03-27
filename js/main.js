@@ -191,6 +191,7 @@
     /* Project cards stagger */
     gsap.from('.project-card', {
       y: 60, opacity: 0, duration: 0.8, ease: 'power2.out', stagger: 0.15,
+      clearProps: 'transform,opacity',
       scrollTrigger: { trigger: '.project-cards', start: 'top 80%', toggleActions: 'play none none none' }
     });
 
@@ -248,10 +249,26 @@
      ---------------------------------------- */
   if (window.innerWidth >= 768) {
     console.log('[Map] Desktop detected, checking dependencies...');
-    console.log('[Map] d3 available:', typeof d3 !== 'undefined');
-    console.log('[Map] topojson available:', typeof topojson !== 'undefined');
 
-    if (typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
+    function waitForDepsAndInit(attempts) {
+      console.log('[Map] d3 available:', typeof d3 !== 'undefined');
+      console.log('[Map] topojson available:', typeof topojson !== 'undefined');
+
+      if (typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
+        startMapInit();
+      } else if (attempts > 0) {
+        console.log('[Map] Dependencies not ready, retrying in 500ms... (' + attempts + ' attempts left)');
+        setTimeout(function () { waitForDepsAndInit(attempts - 1); }, 500);
+      } else {
+        console.error('[Map] Dependencies failed to load after all retries');
+        var timeline = document.querySelector('.journey-timeline');
+        var map = document.querySelector('.journey-map');
+        if (timeline) timeline.style.display = 'block';
+        if (map) map.style.display = 'none';
+      }
+    }
+
+    function startMapInit() {
       var mapContainer = document.querySelector('.journey-map');
       console.log('[Map] Container found:', !!mapContainer);
       console.log('[Map] Container display:', window.getComputedStyle(mapContainer).display);
@@ -434,9 +451,11 @@
       requestAnimationFrame(function () {
         setTimeout(function () { initMap(); }, 100);
       });
-    } else {
-      console.warn('[Map] Missing dependencies — d3:', typeof d3, 'topojson:', typeof topojson);
     }
+
+    requestAnimationFrame(function () {
+      setTimeout(function () { waitForDepsAndInit(5); }, 100);
+    });
   }
 
   /* ----------------------------------------

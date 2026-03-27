@@ -37,45 +37,20 @@
   }
 
   /* ----------------------------------------
-     Pill Nav — Morphs to Bar Past Hero
+     Sticky Header — Visible Past Hero
      ---------------------------------------- */
-  var navPill = document.getElementById('site-nav');
+  var siteHeader = document.getElementById('site-nav');
   var heroSection = document.getElementById('hero');
-  var isDesktop = window.innerWidth >= 768;
 
-  if (isDesktop && navPill && heroSection) {
-    var lastScrollY = 0;
-    var isExpanded = false;
-
+  if (window.innerWidth >= 768 && siteHeader && heroSection) {
     ScrollTrigger.create({
       trigger: heroSection,
-      start: 'bottom 80px',
+      start: 'bottom top',
       onEnter: function () {
-        navPill.classList.add('nav-expanded');
-        isExpanded = true;
+        siteHeader.classList.add('visible');
       },
       onLeaveBack: function () {
-        navPill.classList.remove('nav-expanded');
-        isExpanded = false;
-      }
-    });
-
-    ScrollTrigger.create({
-      trigger: 'body',
-      start: 'top top',
-      end: 'bottom bottom',
-      onUpdate: function (self) {
-        var scrollY = self.scroll();
-        var direction = scrollY > lastScrollY ? 'down' : 'up';
-
-        if (isExpanded && direction === 'down' && scrollY > window.innerHeight) {
-          gsap.to(navPill, { y: -100, duration: 0.3, ease: 'power2.in' });
-        } else if (direction === 'up' && isExpanded) {
-          gsap.to(navPill, { y: 0, duration: 0.3, ease: 'power2.out' });
-        } else if (!isExpanded) {
-          gsap.set(navPill, { y: 0 });
-        }
-        lastScrollY = scrollY;
+        siteHeader.classList.remove('visible');
       }
     });
   }
@@ -90,10 +65,10 @@
       end: 'bottom center',
       onToggle: function (self) {
         if (self.isActive) {
-          document.querySelectorAll('.nav-pill-links a').forEach(function (a) {
+          document.querySelectorAll('.nav-links a').forEach(function (a) {
             a.classList.remove('active');
           });
-          var link = document.querySelector('.nav-pill-links a[href="#' + section.id + '"]');
+          var link = document.querySelector('.nav-links a[href="#' + section.id + '"]');
           if (link) link.classList.add('active');
         }
       }
@@ -271,167 +246,197 @@
   /* ----------------------------------------
      D3 Journey Map (Desktop only)
      ---------------------------------------- */
-  if (window.innerWidth >= 768 && typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
-    var mapContainer = document.querySelector('.journey-map');
+  if (window.innerWidth >= 768) {
+    console.log('[Map] Desktop detected, checking dependencies...');
+    console.log('[Map] d3 available:', typeof d3 !== 'undefined');
+    console.log('[Map] topojson available:', typeof topojson !== 'undefined');
 
-    function initMap() {
-      var containerWidth = mapContainer.clientWidth || mapContainer.getBoundingClientRect().width;
-      if (containerWidth < 100) {
-        setTimeout(initMap, 200);
-        return;
+    if (typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
+      var mapContainer = document.querySelector('.journey-map');
+      console.log('[Map] Container found:', !!mapContainer);
+      console.log('[Map] Container display:', window.getComputedStyle(mapContainer).display);
+      console.log('[Map] Container dimensions:', mapContainer.clientWidth, 'x', mapContainer.clientHeight);
+
+      function initMap() {
+        console.log('[Map] initMap() called');
+        mapContainer.style.display = 'flex';
+
+        var containerWidth = mapContainer.clientWidth || mapContainer.getBoundingClientRect().width;
+        console.log('[Map] Container width:', containerWidth);
+
+        if (containerWidth < 100) {
+          console.log('[Map] Container too narrow, retrying in 500ms...');
+          setTimeout(initMap, 500);
+          return;
+        }
+
+        var loadingEl = mapContainer.querySelector('.journey-map-loading');
+        if (loadingEl) loadingEl.remove();
+
+        console.log('[Map] Fetching TopoJSON...');
+        fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+          .then(function (r) {
+            console.log('[Map] Fetch response:', r.status, r.ok);
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+          })
+          .then(function (worldData) {
+            console.log('[Map] TopoJSON loaded, objects:', Object.keys(worldData.objects));
+
+            var width = Math.min(containerWidth, 1000);
+            var height = width * 0.5;
+
+            d3.select('.journey-map svg').remove();
+
+            var svg = d3.select('.journey-map')
+              .append('svg')
+              .attr('viewBox', '0 0 ' + width + ' ' + height)
+              .attr('preserveAspectRatio', 'xMidYMid meet')
+              .attr('role', 'img')
+              .attr('aria-label', 'World map showing journey across three continents')
+              .style('width', '100%')
+              .style('max-width', width + 'px')
+              .style('display', 'block')
+              .style('margin', '0 auto');
+
+            console.log('[Map] SVG created');
+
+            var projection = d3.geoNaturalEarth1()
+              .fitExtent([[20, 20], [width - 20, height - 20]], { type: 'Sphere' })
+              .precision(0.2);
+
+            var pathGen = d3.geoPath(projection);
+            var land = topojson.feature(worldData, worldData.objects.countries);
+            console.log('[Map] Land features:', land.features.length);
+
+            svg.append('g')
+              .selectAll('path')
+              .data(land.features)
+              .join('path')
+              .attr('class', 'land')
+              .attr('d', pathGen);
+
+            var linesGroup = svg.append('g');
+            var connectionPaths = [];
+
+            for (var i = 0; i < journeyStops.length - 1; i++) {
+              var from = journeyStops[i];
+              var to = journeyStops[i + 1];
+              var lineFeature = {
+                type: 'Feature',
+                geometry: {
+                  type: 'LineString',
+                  coordinates: [[from.lng, from.lat], [to.lng, to.lat]]
+                }
+              };
+
+              var linePath = linesGroup.append('path')
+                .attr('class', 'connection-line')
+                .attr('d', pathGen(lineFeature));
+
+              var totalLen = linePath.node().getTotalLength();
+              linePath
+                .attr('stroke-dasharray', totalLen)
+                .attr('stroke-dashoffset', totalLen);
+
+              connectionPaths.push(linePath.node());
+            }
+
+            var pinsGroup = svg.append('g');
+            var pinElements = [];
+
+            journeyStops.forEach(function (stop, idx) {
+              var coords = projection([stop.lng, stop.lat]);
+              if (!coords) { console.warn('[Map] No coords for:', stop.city); return; }
+
+              var g = pinsGroup.append('g').attr('transform', 'translate(' + coords[0] + ',' + coords[1] + ')');
+
+              if (idx === journeyStops.length - 1) {
+                g.append('circle').attr('class', 'pin-pulse').attr('r', 10).style('opacity', 0);
+              }
+
+              g.append('circle').attr('class', 'pin').attr('r', 5).style('opacity', 0);
+              pinElements.push(g.node());
+            });
+
+            var labelsGroup = svg.append('g');
+            var labelElements = [];
+
+            journeyStops.forEach(function (stop, idx) {
+              var coords = projection([stop.lng, stop.lat]);
+              if (!coords) return;
+
+              var offsetX = 12;
+              var offsetY = -8;
+              if (idx % 2 === 1) { offsetX = -120; }
+
+              var labelG = labelsGroup.append('g')
+                .attr('class', 'map-label')
+                .attr('transform', 'translate(' + (coords[0] + offsetX) + ',' + (coords[1] + offsetY) + ')')
+                .style('opacity', 0);
+
+              labelG.append('rect').attr('width', 110).attr('height', 32).attr('y', -16);
+              labelG.append('text').attr('class', 'label-city').attr('x', 8).attr('y', -2).text(stop.city);
+              labelG.append('text').attr('class', 'label-detail').attr('x', 8).attr('y', 10).text(stop.label);
+
+              labelElements.push(labelG.node());
+            });
+
+            console.log('[Map] Pins:', pinElements.length, 'Labels:', labelElements.length, 'Lines:', connectionPaths.length);
+
+            if (!prefersReducedMotion) {
+              var mapTl = gsap.timeline({
+                scrollTrigger: {
+                  trigger: '.journey',
+                  start: 'top center',
+                  end: 'bottom center',
+                  scrub: 1
+                }
+              });
+
+              mapTl.to(pinElements[0].querySelector('.pin'), { opacity: 1, duration: 0.05 }, 0);
+              mapTl.to(labelElements[0], { opacity: 1, duration: 0.05 }, 0);
+
+              var totalSteps = connectionPaths.length;
+              connectionPaths.forEach(function (pathEl, idx) {
+                var startPos = (idx + 0.5) / (totalSteps + 1);
+                var endPos = (idx + 1.5) / (totalSteps + 1);
+                mapTl.to(pathEl, { strokeDashoffset: 0, ease: 'none' }, startPos);
+                mapTl.to(pinElements[idx + 1].querySelector('.pin'), { opacity: 1, duration: 0.02 }, endPos);
+                mapTl.to(labelElements[idx + 1], { opacity: 1, duration: 0.05 }, endPos);
+              });
+
+              var finalPulse = pinElements[pinElements.length - 1].querySelector('.pin-pulse');
+              if (finalPulse) {
+                mapTl.to(finalPulse, { opacity: 0.3, duration: 0.1 }, 0.95);
+              }
+            } else {
+              connectionPaths.forEach(function (p) { p.setAttribute('stroke-dashoffset', 0); });
+              pinElements.forEach(function (g) { g.querySelector('.pin').style.opacity = 1; });
+              labelElements.forEach(function (g) { g.style.opacity = 1; });
+            }
+
+            ScrollTrigger.refresh();
+            console.log('[Map] Render complete!');
+          })
+          .catch(function (err) {
+            console.error('[Map] FAILED:', err);
+            var timeline = document.querySelector('.journey-timeline');
+            var map = document.querySelector('.journey-map');
+            if (timeline) timeline.style.display = 'block';
+            if (map) {
+              var loadingFallback = map.querySelector('.journey-map-loading');
+              if (loadingFallback) loadingFallback.textContent = 'Map could not load. Showing timeline instead.';
+            }
+          });
       }
 
-      fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-        .then(function (r) {
-          if (!r.ok) throw new Error('Failed to fetch world data: ' + r.status);
-          return r.json();
-        })
-        .then(function (worldData) {
-        var width = Math.min(containerWidth, 1000);
-        var height = width * 0.5;
-
-        var svg = d3.select('.journey-map')
-          .append('svg')
-          .attr('viewBox', '0 0 ' + width + ' ' + height)
-          .attr('role', 'img')
-          .attr('aria-label', 'World map showing Max Gregori\'s journey across three continents');
-
-        var projection = d3.geoNaturalEarth1()
-          .fitExtent([[20, 20], [width - 20, height - 20]], { type: 'Sphere' })
-          .precision(0.2);
-
-        var path = d3.geoPath(projection);
-        var land = topojson.feature(worldData, worldData.objects.countries);
-
-        /* Land */
-        svg.append('g')
-          .selectAll('path')
-          .data(land.features)
-          .join('path')
-          .attr('class', 'land')
-          .attr('d', path);
-
-        /* Connection lines */
-        var linesGroup = svg.append('g');
-        var connectionPaths = [];
-
-        for (var i = 0; i < journeyStops.length - 1; i++) {
-          var from = journeyStops[i];
-          var to = journeyStops[i + 1];
-          var lineFeature = {
-            type: 'Feature',
-            geometry: {
-              type: 'LineString',
-              coordinates: [[from.lng, from.lat], [to.lng, to.lat]]
-            }
-          };
-
-          var linePath = linesGroup.append('path')
-            .attr('class', 'connection-line')
-            .attr('d', path(lineFeature));
-
-          var totalLen = linePath.node().getTotalLength();
-          linePath
-            .attr('stroke-dasharray', totalLen)
-            .attr('stroke-dashoffset', totalLen);
-
-          connectionPaths.push(linePath.node());
-        }
-
-        /* Pins */
-        var pinsGroup = svg.append('g');
-        var pinElements = [];
-
-        journeyStops.forEach(function (stop, idx) {
-          var coords = projection([stop.lng, stop.lat]);
-          if (!coords) return;
-
-          var g = pinsGroup.append('g').attr('transform', 'translate(' + coords[0] + ',' + coords[1] + ')');
-
-          if (idx === journeyStops.length - 1) {
-            g.append('circle').attr('class', 'pin-pulse').attr('r', 10).style('opacity', 0);
-          }
-
-          g.append('circle').attr('class', 'pin').attr('r', 5).style('opacity', 0);
-
-          pinElements.push(g.node());
-        });
-
-        /* Labels */
-        var labelsGroup = svg.append('g');
-        var labelElements = [];
-
-        journeyStops.forEach(function (stop, idx) {
-          var coords = projection([stop.lng, stop.lat]);
-          if (!coords) return;
-
-          var offsetX = 12;
-          var offsetY = -8;
-          /* Alternate label positions to reduce overlap */
-          if (idx % 2 === 1) { offsetX = -120; }
-
-          var labelG = labelsGroup.append('g')
-            .attr('class', 'map-label')
-            .attr('transform', 'translate(' + (coords[0] + offsetX) + ',' + (coords[1] + offsetY) + ')')
-            .style('opacity', 0);
-
-          labelG.append('rect').attr('width', 110).attr('height', 32).attr('y', -16);
-          labelG.append('text').attr('class', 'label-city').attr('x', 8).attr('y', -2).text(stop.city);
-          labelG.append('text').attr('class', 'label-detail').attr('x', 8).attr('y', 10).text(stop.label);
-
-          labelElements.push(labelG.node());
-        });
-
-        /* Scroll-driven animation */
-        if (!prefersReducedMotion) {
-          var mapTl = gsap.timeline({
-            scrollTrigger: {
-              trigger: '.journey',
-              start: 'top center',
-              end: 'bottom center',
-              scrub: 1
-            }
-          });
-
-          /* Show first pin + label */
-          mapTl.to(pinElements[0].querySelector('.pin'), { opacity: 1, duration: 0.05 }, 0);
-          mapTl.to(labelElements[0], { opacity: 1, duration: 0.05 }, 0);
-
-          /* Animate each connection + reveal next pin */
-          var totalSteps = connectionPaths.length;
-          connectionPaths.forEach(function (pathEl, idx) {
-            var startPos = (idx + 0.5) / (totalSteps + 1);
-            var endPos = (idx + 1.5) / (totalSteps + 1);
-
-            mapTl.to(pathEl, { strokeDashoffset: 0, ease: 'none' }, startPos);
-            mapTl.to(pinElements[idx + 1].querySelector('.pin'), { opacity: 1, duration: 0.02 }, endPos);
-            mapTl.to(labelElements[idx + 1], { opacity: 1, duration: 0.05 }, endPos);
-          });
-
-          /* Pulse on final pin */
-          var finalPulse = pinElements[pinElements.length - 1].querySelector('.pin-pulse');
-          if (finalPulse) {
-            mapTl.to(finalPulse, { opacity: 0.3, duration: 0.1 }, 0.95);
-          }
-        } else {
-          /* Reduced motion: show everything */
-          connectionPaths.forEach(function (p) { p.setAttribute('stroke-dashoffset', 0); });
-          pinElements.forEach(function (g) { g.querySelector('.pin').style.opacity = 1; });
-          labelElements.forEach(function (g) { g.style.opacity = 1; });
-        }
-
-        ScrollTrigger.refresh();
-      })
-      .catch(function (err) {
-        console.warn('Journey map failed to load:', err);
-        var timeline = document.querySelector('.journey-timeline');
-        var map = document.querySelector('.journey-map');
-        if (timeline) timeline.style.display = 'block';
-        if (map) map.style.display = 'none';
+      requestAnimationFrame(function () {
+        setTimeout(function () { initMap(); }, 100);
       });
+    } else {
+      console.warn('[Map] Missing dependencies — d3:', typeof d3, 'topojson:', typeof topojson);
     }
-
-    requestAnimationFrame(function () { initMap(); });
   }
 
   /* ----------------------------------------

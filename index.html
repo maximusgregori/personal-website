@@ -24,11 +24,11 @@
 
   <div class="scroll-progress" aria-hidden="true"></div>
 
-  <!-- Pill Navigation -->
-  <header class="nav-pill" id="site-nav" aria-label="Main navigation">
-    <nav class="nav-pill-inner">
-      <a href="#hero" class="nav-pill-logo">MG</a>
-      <div class="nav-pill-links">
+  <!-- Site Navigation -->
+  <header class="site-header" id="site-nav" aria-label="Main navigation">
+    <nav class="nav-inner">
+      <a href="#hero" class="nav-logo">MG</a>
+      <div class="nav-links">
         <a href="#work">Work</a>
         <a href="#journey">Journey</a>
         <a href="#about">About</a>
@@ -43,6 +43,7 @@
   </header>
 
   <!-- Mobile Nav Overlay -->
+
   <div class="mobile-nav-overlay" id="mobile-nav" role="dialog" aria-label="Navigation menu" aria-hidden="true">
     <button class="mobile-nav-close" aria-label="Close navigation menu">&times;</button>
     <nav>
@@ -253,7 +254,9 @@
         <p class="section-intro section-intro--dark">Three continents, eight cities, and the instinct that comes from never staying in one place too long.</p>
 
         <div class="journey-map" aria-label="Interactive map showing Max's journey across three continents">
-          <!-- D3 renders the SVG map here (desktop only) -->
+          <div class="journey-map-loading">
+            <p>Loading map...</p>
+          </div>
         </div>
 
         <div class="journey-timeline" aria-label="Timeline of Max's journey across three continents">
@@ -362,7 +365,7 @@
 
           <blockquote class="testimonial-card testimonial-card--featured">
             <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-            <p>"Max doesn't just identify opportunities. He creates them."</p>
+            <p>Max doesn't just identify opportunities. He creates them.</p>
             <cite>
               <span class="cite-name">Dale Calvin</span>
               <span class="cite-role">CEO, Integrity Healthcare IT Solutions</span>
@@ -371,7 +374,7 @@
 
           <blockquote class="testimonial-card">
             <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-            <p>"He's a gifted student, efficient worker, and able to understand and navigate complex deals with little outside input. He is honest, dependable, and incredibly hardworking."</p>
+            <p>He's a gifted student, efficient worker, and able to understand and navigate complex deals with little outside input. He is honest, dependable, and incredibly hardworking.</p>
             <cite>
               <span class="cite-name">Euan Rellie</span>
               <span class="cite-role">Managing Partner, BDA Partners</span>
@@ -380,7 +383,7 @@
 
           <blockquote class="testimonial-card">
             <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-            <p>"Max is quick to identify problems, proactive about communicating about them and eager to play a role in solving them. These three qualities are rare for a young person."</p>
+            <p>Max is quick to identify problems, proactive about communicating about them and eager to play a role in solving them. These three qualities are rare for a young person.</p>
             <cite>
               <span class="cite-name">Jack Saltzman</span>
               <span class="cite-role">Growth &amp; Operations, Saturn Technologies</span>
@@ -389,7 +392,7 @@
 
           <blockquote class="testimonial-card">
             <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-            <p>"His positive impact to our company's product roadmap and client engagement procedures are still being felt today."</p>
+            <p>His positive impact to our company's product roadmap and client engagement procedures are still being felt today.</p>
             <cite>
               <span class="cite-name">Terry Guo</span>
               <span class="cite-role">President &amp; Chief Product Officer, LotusFlare</span>

@@ -340,40 +340,57 @@
               pinElements.push(g.node());
             });
 
+            /* Labels with leader lines */
             var labelsGroup = svg.append('g');
+            var leaderLinesGroup = svg.append('g');
             var labelElements = [];
 
-            var labelOffsets = [
-              [14, -20],     // 0: Hamburg
-              [-145, 14],    // 1: Düsseldorf
-              [14, -20],     // 2: Cape Town
-              [14, -30],     // 3: NYC (8th grade)
-              [-155, -10],   // 4: Boca Raton
-              [14, 14],      // 5: NYC (jr/sr year)
-              [-165, 20],    // 6: Austin (UT)
-              [14, -25],     // 7: Dallas
-              [-165, -10]    // 8: Austin (Constance)
-            ];
+            var leftColumnX = 30;
+            var leftColumnStartY = height * 0.25;
+            var leftColumnSpacing = 50;
+            var rightColumnX = width * 0.38;
+            var rightColumnStartY = height * 0.18;
+            var rightColumnSpacing = 50;
 
             journeyStops.forEach(function (stop, idx) {
-              var coords = projection([stop.lng, stop.lat]);
-              if (!coords) return;
+              var pinCoords = projection([stop.lng, stop.lat]);
+              if (!pinCoords) return;
 
-              var offsets = labelOffsets[idx] || [14, -8];
               var cityText = stop.city;
               var detailText = stop.label;
               var rectWidth = Math.max(Math.max(cityText.length, detailText.length) * 7 + 16, 100);
 
-              var labelG = labelsGroup.append('g')
-                .attr('class', 'map-label')
-                .attr('transform', 'translate(' + (coords[0] + offsets[0]) + ',' + (coords[1] + offsets[1]) + ')')
+              var labelX, labelY;
+              switch (idx) {
+                case 0: labelX = pinCoords[0] + 18; labelY = pinCoords[1] - 25; break;
+                case 1: labelX = pinCoords[0] + 18; labelY = pinCoords[1] + 20; break;
+                case 2: labelX = pinCoords[0] + 18; labelY = pinCoords[1] - 15; break;
+                case 3: labelX = rightColumnX; labelY = rightColumnStartY; break;
+                case 4: labelX = leftColumnX; labelY = leftColumnStartY; break;
+                case 5: labelX = rightColumnX; labelY = rightColumnStartY + rightColumnSpacing; break;
+                case 6: labelX = leftColumnX; labelY = leftColumnStartY + leftColumnSpacing; break;
+                case 7: labelX = leftColumnX; labelY = leftColumnStartY + leftColumnSpacing * 2; break;
+                case 8: labelX = leftColumnX; labelY = leftColumnStartY + leftColumnSpacing * 3; break;
+              }
+
+              var leaderLine = leaderLinesGroup.append('line')
+                .attr('class', 'leader-line')
+                .attr('x1', pinCoords[0])
+                .attr('y1', pinCoords[1])
+                .attr('x2', labelX + rectWidth / 2)
+                .attr('y2', labelY)
                 .style('opacity', 0);
 
-              labelG.append('rect').attr('width', rectWidth).attr('height', 36).attr('y', -18);
+              var labelG = labelsGroup.append('g')
+                .attr('class', 'map-label')
+                .attr('transform', 'translate(' + labelX + ',' + labelY + ')')
+                .style('opacity', 0);
+
+              labelG.append('rect').attr('width', rectWidth).attr('height', 36).attr('y', -18).attr('rx', 6);
               labelG.append('text').attr('class', 'label-city').attr('x', 8).attr('y', -3).text(cityText);
               labelG.append('text').attr('class', 'label-detail').attr('x', 8).attr('y', 12).text(detailText);
 
-              labelElements.push(labelG.node());
+              labelElements.push({ label: labelG.node(), leader: leaderLine.node() });
             });
 
             console.log('[Map] Pins:', pinElements.length, 'Labels:', labelElements.length, 'Lines:', connectionPaths.length);
@@ -381,33 +398,38 @@
             if (!prefersReducedMotion) {
               var mapTl = gsap.timeline({
                 scrollTrigger: {
-                  trigger: '.journey',
-                  start: 'top 80%',
-                  end: 'center top',
+                  trigger: '.journey-map',
+                  start: 'top 90%',
+                  end: 'top 20%',
                   scrub: 1
                 }
               });
 
-              mapTl.to(pinElements[0].querySelector('.pin'), { opacity: 1, duration: 0.05 }, 0);
-              mapTl.to(labelElements[0], { opacity: 1, duration: 0.05 }, 0);
+              mapTl.to(pinElements[0].querySelector('.pin'), { opacity: 1, duration: 0.03 }, 0);
+              mapTl.to(labelElements[0].label, { opacity: 1, duration: 0.03 }, 0);
+              mapTl.to(labelElements[0].leader, { opacity: 1, duration: 0.03 }, 0);
 
               var totalSteps = connectionPaths.length;
               connectionPaths.forEach(function (pathEl, idx) {
-                var startPos = (idx + 0.5) / (totalSteps + 1);
-                var endPos = (idx + 1.5) / (totalSteps + 1);
+                var startPos = (idx + 0.3) / (totalSteps + 0.5);
+                var endPos = (idx + 1) / (totalSteps + 0.5);
                 mapTl.to(pathEl, { strokeDashoffset: 0, ease: 'none' }, startPos);
                 mapTl.to(pinElements[idx + 1].querySelector('.pin'), { opacity: 1, duration: 0.02 }, endPos);
-                mapTl.to(labelElements[idx + 1], { opacity: 1, duration: 0.05 }, endPos);
+                mapTl.to(labelElements[idx + 1].label, { opacity: 1, duration: 0.03 }, endPos);
+                mapTl.to(labelElements[idx + 1].leader, { opacity: 1, duration: 0.03 }, endPos);
               });
 
               var finalPulse = pinElements[pinElements.length - 1].querySelector('.pin-pulse');
               if (finalPulse) {
-                mapTl.to(finalPulse, { opacity: 0.3, duration: 0.1 }, 0.95);
+                mapTl.to(finalPulse, { opacity: 0.3, duration: 0.1 }, 0.92);
               }
             } else {
               connectionPaths.forEach(function (p) { p.setAttribute('stroke-dashoffset', 0); });
               pinElements.forEach(function (g) { g.querySelector('.pin').style.opacity = 1; });
-              labelElements.forEach(function (g) { g.style.opacity = 1; });
+              labelElements.forEach(function (el) {
+                el.label.style.opacity = 1;
+                el.leader.style.opacity = 1;
+              });
             }
 
             ScrollTrigger.refresh();

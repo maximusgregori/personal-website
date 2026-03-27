@@ -594,6 +594,12 @@ ul { list-style: none; }
   rx: 6;
 }
 
+.journey-map .leader-line {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
 .journey-map .map-label .label-city {
   fill: var(--color-text-dark-bg);
   font-family: var(--font-heading);

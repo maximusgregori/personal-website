@@ -17,13 +17,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Poppins:wght@300;600;700&display=swap" rel="stylesheet">
 
-  <!-- AOS CSS -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
   <!-- Site CSS -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+  <div class="scroll-progress" aria-hidden="true"></div>
 
   <!-- Sticky Navigation -->
   <header class="site-nav" id="site-nav" aria-label="Main navigation">
@@ -60,10 +59,10 @@
     <section class="hero" id="hero">
       <div class="hero-content">
         <div class="hero-text">
-          <p class="hero-name" data-aos="fade-up" data-aos-delay="200">Max Gregori</p>
-          <h1 class="hero-headline" data-aos="fade-up" data-aos-delay="400">I Build Systems That Solve Problems Others Work Around</h1>
-          <p class="hero-subheadline" data-aos="fade-up" data-aos-delay="600">I find where processes break down, build what fixes them, and scale the solution.</p>
-          <div class="hero-actions" data-aos="fade-up" data-aos-delay="800">
+          <p class="hero-name">Max Gregori</p>
+          <h1 class="hero-headline">I Build Systems That Solve Problems Others Work Around</h1>
+          <p class="hero-subheadline">I find where processes break down, build what fixes them, and scale the solution.</p>
+          <div class="hero-actions">
             <a href="#work" class="btn-primary">See My Work</a>
             <a href="#contact" class="btn-secondary">Get in Touch</a>
           </div>
@@ -72,23 +71,19 @@
           <img src="images/headshot.webp" alt="Max Gregori" class="hero-headshot" loading="lazy">
         </div>
       </div>
-      <div class="section-wave section-wave--hero" aria-hidden="true">
-        <svg viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,24 C360,56 1080,56 1440,24 L1440,48 L0,48 Z" fill="#F4F4F4"/>
-        </svg>
-      </div>
     </section>
 
     <!-- Section 2: Featured Projects -->
     <section class="projects" id="work">
       <div class="section-container">
-        <h2 class="section-label" data-aos="fade-up">What I Build</h2>
-        <p class="section-intro" data-aos="fade-up" data-aos-delay="100">The best way to understand what's possible is to build it. Every project here started with a real problem, and my answer was always the same: go build the thing and find out.</p>
+        <h2 class="section-label">What I Build</h2>
+        <p class="section-intro">The best way to understand what's possible is to build it. Every project here started with a real problem, and my answer was always the same: go build the thing and find out.</p>
 
         <div class="project-cards">
 
           <!-- Project 1 -->
-          <article class="project-card" data-aos="fade-up" data-aos-delay="0">
+          <article class="project-card">
+            <span class="project-number" aria-hidden="true">01</span>
             <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Building a Healthcare IT Service Line from Zero">
               <div class="card-collapsed">
                 <p class="card-question">What happens when a business needs something that doesn't exist?</p>
@@ -100,7 +95,7 @@
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
-            <div class="card-expanded" aria-hidden="true">
+            <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
               <div class="case-study">
                 <p class="case-label">The problem</p>
                 <p>Outpatient surgery centers had a consistent, unaddressed need. Physicians don't want to deal with broken hardware, network outages, or software lockouts. They want IT to work, and when it doesn't, they want someone physically there to fix it. When I joined Integrity HIT as Director of Business Development, the company was an IT staffing agency with no on-site capability. The opportunity was clear.</p>
@@ -113,7 +108,8 @@
           </article>
 
           <!-- Project 2 -->
-          <article class="project-card" data-aos="fade-up" data-aos-delay="100">
+          <article class="project-card">
+            <span class="project-number" aria-hidden="true">02</span>
             <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Automating the Operations I Built">
               <div class="card-collapsed">
                 <p class="card-question">What happens when that business outgrows its own operations?</p>
@@ -127,7 +123,7 @@
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
-            <div class="card-expanded" aria-hidden="true">
+            <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
               <div class="case-study">
                 <p class="case-label">The problem</p>
                 <p>The field services practice was growing, and that growth created a new problem. Too many clients onboarding at the same time, too many jobs competing for the same technicians, and no clean way to see who was available when. The service itself was solid. The coordination behind it wasn't keeping pace, and that was starting to affect quality.</p>
@@ -140,7 +136,8 @@
           </article>
 
           <!-- Project 3 -->
-          <article class="project-card" data-aos="fade-up" data-aos-delay="200">
+          <article class="project-card">
+            <span class="project-number" aria-hidden="true">03</span>
             <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Replacing Scattered Workflows with an AI-Powered Web App">
               <div class="card-collapsed">
                 <p class="card-question">What happens when an entire team is drowning in spreadsheets?</p>
@@ -153,7 +150,7 @@
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
-            <div class="card-expanded" aria-hidden="true">
+            <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
               <div class="case-study">
                 <p class="case-label">The problem</p>
                 <p>MediReport is a European cardiovascular information system that I helped bring into the American healthcare market. As they started implementing across outpatient OBLs, ASCs, and clinics doing cardiovascular procedures, the project management side couldn't keep up. Tracking was spread across Excel spreadsheets, multiple OneDrive instances, email chains, and weekly PowerPoint status decks. Different people were updating different files. Version conflicts were constant. There was no single source of truth, and bottlenecks were showing up at every stage.</p>
@@ -166,7 +163,8 @@
           </article>
 
           <!-- Project 4 -->
-          <article class="project-card" data-aos="fade-up" data-aos-delay="300">
+          <article class="project-card">
+            <span class="project-number" aria-hidden="true">04</span>
             <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Automating a Full Creative Pipeline End-to-End">
               <div class="card-collapsed">
                 <p class="card-question">When I want to understand something, I build it.</p>
@@ -178,7 +176,7 @@
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
-            <div class="card-expanded" aria-hidden="true">
+            <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
               <div class="case-study">
                 <p class="case-label">The problem</p>
                 <p>AI-generated content was taking off, and most of the conversation around it felt like hype. My girlfriend runs a wellness brand with regular sponsorship offers, so I had a real use case ready. But before building anything for her, I wanted to understand every step of the pipeline myself.</p>
@@ -191,7 +189,8 @@
           </article>
 
           <!-- Project 5 -->
-          <article class="project-card" data-aos="fade-up" data-aos-delay="400">
+          <article class="project-card">
+            <span class="project-number" aria-hidden="true">05</span>
             <button class="card-toggle" aria-expanded="false" aria-label="Expand project: An Autonomous Trading System Built from First Principles">
               <div class="card-collapsed">
                 <p class="card-question">When I want to understand something, I build it.</p>
@@ -203,7 +202,7 @@
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
-            <div class="card-expanded" aria-hidden="true">
+            <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
               <div class="case-study">
                 <p class="case-label">The problem</p>
                 <p>Prediction markets were taking off and people were claiming you could set up a trading bot overnight. I wanted to find out for myself what it actually takes to build one of these and whether there's a real edge behind the noise.</p>
@@ -216,7 +215,8 @@
           </article>
 
           <!-- Project 6 -->
-          <article class="project-card" data-aos="fade-up" data-aos-delay="500">
+          <article class="project-card">
+            <span class="project-number" aria-hidden="true">06</span>
             <button class="card-toggle" aria-expanded="false" aria-label="Expand project: An AI Recipe App, from Concept to App Store">
               <div class="card-collapsed">
                 <p class="card-question">When the people I care about have a problem, I build the fix.</p>
@@ -228,7 +228,7 @@
                 <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
-            <div class="card-expanded" aria-hidden="true">
+            <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
               <div class="case-study">
                 <p class="case-label">The problem</p>
                 <p>The two people in my life who cook the most had recipes saved in a dozen different places. Handwritten notes, Instagram saves, screenshots, bookmarked websites, physical cookbooks. They could never find what they needed when they needed it.</p>
@@ -247,20 +247,20 @@
     <!-- Section 3: About -->
     <section class="about" id="about">
       <div class="section-container">
-        <h2 class="section-label" data-aos="fade-up">About Me</h2>
+        <h2 class="section-label">About Me</h2>
         <div class="about-content">
-          <div class="about-photo" data-aos="fade-up" data-aos-delay="100">
+          <div class="about-photo">
             <img src="images/headshot.webp" alt="Max Gregori" class="about-headshot" loading="lazy">
           </div>
           <div class="about-text">
-            <p data-aos="fade-up" data-aos-delay="150">I was born in Germany, raised in South Africa for six years, and moved to the United States, where I went to high school in New York and studied Management and Entrepreneurship at UT Austin's McCombs School of Business.</p>
-            <p data-aos="fade-up" data-aos-delay="200">Growing up across three continents shaped how I think about problems. You develop an instinct for how different people experience the same situation, and you get comfortable operating in places where nothing feels familiar.</p>
-            <p data-aos="fade-up" data-aos-delay="250">I co-founded my first company, a digital marketing agency, while still in school. That led to growth roles at startups, two summers in investment banking in New York, and eventually a deep dive into healthcare IT, where I managed large-scale projects and built service lines from scratch. The consistent thread across all of it was that the biggest problems I kept running into weren't technical. They were operational.</p>
-            <p data-aos="fade-up" data-aos-delay="300">Today I run Constance IT. I build AI-powered workflow automation and managed IT services for small and medium-sized businesses. Enterprises have their consultancies and custom AI tools. Most SMBs don't have access to any of that. That's what I'm working on.</p>
-            <p data-aos="fade-up" data-aos-delay="350">When I'm not building, I'm watching Formula One. I picked that up around four years old, watching races in my grandparents' basement in Germany. Some things stay with you.</p>
+            <p>I was born in Germany, raised in South Africa for six years, and moved to the United States, where I went to high school in New York and studied Management and Entrepreneurship at UT Austin's McCombs School of Business.</p>
+            <p>Growing up across three continents shaped how I think about problems. You develop an instinct for how different people experience the same situation, and you get comfortable operating in places where nothing feels familiar.</p>
+            <p>I co-founded my first company, a digital marketing agency, while still in school. That led to growth roles at startups, two summers in investment banking in New York, and eventually a deep dive into healthcare IT, where I managed large-scale projects and built service lines from scratch. The consistent thread across all of it was that the biggest problems I kept running into weren't technical. They were operational.</p>
+            <p>Today I run Constance IT. I build AI-powered workflow automation and managed IT services for small and medium-sized businesses. Enterprises have their consultancies and custom AI tools. Most SMBs don't have access to any of that. That's what I'm working on.</p>
+            <p>When I'm not building, I'm watching Formula One. I picked that up around four years old, watching races in my grandparents' basement in Germany. Some things stay with you.</p>
           </div>
         </div>
-        <blockquote class="recommendation" data-aos="fade-up" data-aos-delay="400">
+        <blockquote class="recommendation">
           <p>"Max doesn't just identify opportunities. He creates them."</p>
           <cite>Dale Calvin, CEO, Integrity Healthcare IT Solutions</cite>
         </blockquote>
@@ -269,16 +269,11 @@
 
     <!-- Section 4: Contact / Footer -->
     <section class="contact" id="contact">
-      <div class="section-wave section-wave--contact" aria-hidden="true">
-        <svg viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,24 C360,-8 1080,-8 1440,24 L1440,48 L0,48 Z" fill="#0F172A"/>
-        </svg>
-      </div>
       <div class="section-container contact-content">
-        <h2 class="contact-headline" data-aos="fade-up">Let's Talk</h2>
-        <p class="contact-subtext" data-aos="fade-up" data-aos-delay="100">Whether you're a recruiter, a potential collaborator, or just want to say hello, I'd like to hear from you.</p>
-        <a href="mailto:max@constanceit.com" class="btn-primary contact-email" data-aos="fade-up" data-aos-delay="200">max@constanceit.com</a>
-        <div class="contact-links" data-aos="fade-up" data-aos-delay="300">
+        <h2 class="contact-headline">Let's Talk</h2>
+        <p class="contact-subtext">Whether you're a recruiter, a potential collaborator, or just want to say hello, I'd like to hear from you.</p>
+        <a href="mailto:max@constanceit.com" class="btn-primary contact-email">max@constanceit.com</a>
+        <div class="contact-links">
           <a href="https://linkedin.com/in/maxgregori" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <a href="https://constanceit.com" target="_blank" rel="noopener noreferrer">Constance IT</a>
         </div>
@@ -290,8 +285,13 @@
 
   </main>
 
-  <!-- AOS JS -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- SplitType -->
+  <script src="https://unpkg.com/split-type"></script>
+  <!-- Lenis smooth scroll -->
+  <script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
   <!-- Site JS -->
   <script src="js/main.js"></script>
 </body>

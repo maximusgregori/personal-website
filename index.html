@@ -24,15 +24,16 @@
 
   <div class="scroll-progress" aria-hidden="true"></div>
 
-  <!-- Sticky Navigation -->
-  <header class="site-nav" id="site-nav" aria-label="Main navigation">
-    <nav class="nav-bar">
-      <a href="#hero" class="nav-logo">Max Gregori</a>
-      <ul class="nav-links" role="list">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+  <!-- Pill Navigation -->
+  <header class="nav-pill" id="site-nav" aria-label="Main navigation">
+    <nav class="nav-pill-inner">
+      <a href="#hero" class="nav-pill-logo">MG</a>
+      <div class="nav-pill-links">
+        <a href="#work">Work</a>
+        <a href="#journey">Journey</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
       <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
@@ -47,6 +48,7 @@
     <nav>
       <ul class="mobile-nav-links" role="list">
         <li><a href="#work">Work</a></li>
+        <li><a href="#journey">Journey</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -244,7 +246,97 @@
       </div>
     </section>
 
-    <!-- Section 3: About -->
+    <!-- Section 3: Journey -->
+    <section class="journey" id="journey">
+      <div class="section-container">
+        <h2 class="section-label section-label--dark">The Journey</h2>
+        <p class="section-intro section-intro--dark">Three continents, eight cities, and the instinct that comes from never staying in one place too long.</p>
+
+        <div class="journey-map" aria-label="Interactive map showing Max's journey across three continents">
+          <!-- D3 renders the SVG map here (desktop only) -->
+        </div>
+
+        <div class="journey-timeline" aria-label="Timeline of Max's journey across three continents">
+          <div class="timeline-track">
+            <div class="timeline-stop">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-age">Age 0</span>
+                <h3 class="timeline-city">Hamburg, Germany</h3>
+                <p class="timeline-label">Born</p>
+              </div>
+            </div>
+            <div class="timeline-stop">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-age">Ages 1-8</span>
+                <h3 class="timeline-city">Düsseldorf, Germany</h3>
+                <p class="timeline-label">Early childhood</p>
+              </div>
+            </div>
+            <div class="timeline-stop">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-age">Ages 9-14</span>
+                <h3 class="timeline-city">Cape Town, South Africa</h3>
+                <p class="timeline-label">Six years in South Africa</p>
+              </div>
+            </div>
+            <div class="timeline-stop">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-age">Age 14</span>
+                <h3 class="timeline-city">New York City, USA</h3>
+                <p class="timeline-label">The Browning School, 8th grade</p>
+              </div>
+            </div>
+            <div class="timeline-stop">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-age">Ages 15-16</span>
+                <h3 class="timeline-city">Boca Raton, USA</h3>
+                <p class="timeline-label">Saint Andrew's School</p>
+              </div>
+            </div>
+            <div class="timeline-stop">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-age">Ages 17-18</span>
+                <h3 class="timeline-city">New York City, USA</h3>
+                <p class="timeline-label">The Browning School, junior &amp; senior year</p>
+              </div>
+            </div>
+            <div class="timeline-stop">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-age">Ages 19-22</span>
+                <h3 class="timeline-city">Austin, USA</h3>
+                <p class="timeline-label">UT Austin, McCombs School of Business</p>
+              </div>
+            </div>
+            <div class="timeline-stop">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-age">Ages 23-24</span>
+                <h3 class="timeline-city">Dallas, USA</h3>
+                <p class="timeline-label">SCA Health &amp; Integrity HIT</p>
+              </div>
+            </div>
+            <div class="timeline-stop timeline-stop--current">
+              <div class="timeline-dot timeline-dot--pulse"></div>
+              <div class="timeline-content">
+                <span class="timeline-age">Age 25-present</span>
+                <h3 class="timeline-city">Austin, USA</h3>
+                <p class="timeline-label">Constance IT</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 4: About -->
     <section class="about" id="about">
       <div class="section-container">
         <h2 class="section-label">About Me</h2>
@@ -253,21 +345,71 @@
             <img src="images/headshot.webp" alt="Max Gregori" class="about-headshot" loading="lazy">
           </div>
           <div class="about-text">
-            <p>I was born in Germany, raised in South Africa for six years, and moved to the United States, where I went to high school in New York and studied Management and Entrepreneurship at UT Austin's McCombs School of Business.</p>
-            <p>Growing up across three continents shaped how I think about problems. You develop an instinct for how different people experience the same situation, and you get comfortable operating in places where nothing feels familiar.</p>
             <p>I co-founded my first company, a digital marketing agency, while still in school. That led to growth roles at startups, two summers in investment banking in New York, and eventually a deep dive into healthcare IT, where I managed large-scale projects and built service lines from scratch. The consistent thread across all of it was that the biggest problems I kept running into weren't technical. They were operational.</p>
             <p>Today I run Constance IT. I build AI-powered workflow automation and managed IT services for small and medium-sized businesses. Enterprises have their consultancies and custom AI tools. Most SMBs don't have access to any of that. That's what I'm working on.</p>
             <p>When I'm not building, I'm watching Formula One. I picked that up around four years old, watching races in my grandparents' basement in Germany. Some things stay with you.</p>
           </div>
         </div>
-        <blockquote class="recommendation">
-          <p>"Max doesn't just identify opportunities. He creates them."</p>
-          <cite>Dale Calvin, CEO, Integrity Healthcare IT Solutions</cite>
-        </blockquote>
       </div>
     </section>
 
-    <!-- Section 4: Contact / Footer -->
+    <!-- Section 5: Testimonials -->
+    <section class="testimonials" id="testimonials">
+      <div class="section-container">
+        <h2 class="section-label section-label--dark">What People Say</h2>
+
+        <div class="testimonial-cards">
+
+          <blockquote class="testimonial-card testimonial-card--featured">
+            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
+            <p>"Max doesn't just identify opportunities. He creates them."</p>
+            <cite>
+              <span class="cite-name">Dale Calvin</span>
+              <span class="cite-role">CEO, Integrity Healthcare IT Solutions</span>
+            </cite>
+          </blockquote>
+
+          <blockquote class="testimonial-card">
+            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
+            <p>"He's a gifted student, efficient worker, and able to understand and navigate complex deals with little outside input. He is honest, dependable, and incredibly hardworking."</p>
+            <cite>
+              <span class="cite-name">Euan Rellie</span>
+              <span class="cite-role">Managing Partner, BDA Partners</span>
+            </cite>
+          </blockquote>
+
+          <blockquote class="testimonial-card">
+            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
+            <p>"Max is quick to identify problems, proactive about communicating about them and eager to play a role in solving them. These three qualities are rare for a young person."</p>
+            <cite>
+              <span class="cite-name">Jack Saltzman</span>
+              <span class="cite-role">Growth &amp; Operations, Saturn Technologies</span>
+            </cite>
+          </blockquote>
+
+          <blockquote class="testimonial-card">
+            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
+            <p>"His positive impact to our company's product roadmap and client engagement procedures are still being felt today."</p>
+            <cite>
+              <span class="cite-name">Terry Guo</span>
+              <span class="cite-role">President &amp; Chief Product Officer, LotusFlare</span>
+            </cite>
+          </blockquote>
+
+          <blockquote class="testimonial-card">
+            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
+            <p>"He built solid relationships with our US clients through clear communication, patience and calm. He showed leadership and a pragmatic, problem-solving mindset when hitting difficulties."</p>
+            <cite>
+              <span class="cite-name">Frederic Darguesse</span>
+              <span class="cite-role">General Manager, MediReport</span>
+            </cite>
+          </blockquote>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Contact / Footer -->
     <section class="contact" id="contact">
       <div class="section-container contact-content">
         <h2 class="contact-headline">Let's Talk</h2>
@@ -292,6 +434,9 @@
   <script src="https://unpkg.com/split-type"></script>
   <!-- Lenis smooth scroll -->
   <script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
+  <!-- D3 + TopoJSON (for journey map) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson-client/3.1.0/topojson-client.min.js"></script>
   <!-- Site JS -->
   <script src="js/main.js"></script>
 </body>

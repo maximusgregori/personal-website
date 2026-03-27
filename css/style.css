@@ -407,7 +407,7 @@ ul { list-style: none; }
   background-color: var(--color-light-base);
   clip-path: polygon(0 40px, 100% 0, 100% 100%, 0 100%);
   margin-top: -40px;
-  padding: calc(var(--space-3xl) + 40px) 0 var(--space-3xl);
+  padding: calc(var(--space-3xl) + 40px) 0 calc(var(--space-3xl) + 60px);
 }
 
 .project-cards {
@@ -535,11 +535,16 @@ ul { list-style: none; }
   background-color: var(--color-dark-base);
   clip-path: polygon(0 0, 100% 40px, 100% 100%, 0 calc(100% - 40px));
   margin-top: -40px;
-  padding: calc(var(--space-3xl) + 40px) 0 calc(var(--space-3xl) + 40px);
+  padding: calc(var(--space-3xl) + 80px) 0 calc(var(--space-3xl) + 40px);
 }
 
 /* Desktop map */
-.journey-map { display: none; min-height: 400px; }
+.journey-map {
+  display: none;
+  min-height: 500px;
+  align-items: center;
+  justify-content: center;
+}
 
 .journey-map svg {
   width: 100%;
@@ -844,6 +849,30 @@ ul { list-style: none; }
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 0;
+    transition: border-radius 0.4s ease, width 0.4s ease, left 0.4s ease,
+                transform 0.4s ease, background 0.4s ease, padding 0.4s ease,
+                right 0.4s ease, top 0.4s ease;
+  }
+
+  .nav-pill.nav-expanded {
+    border-radius: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    transform: none;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0;
+  }
+
+  .nav-pill.nav-expanded .nav-pill-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px var(--space-md);
   }
 
   .nav-pill-inner {
@@ -917,7 +946,7 @@ ul { list-style: none; }
 
   /* Journey: show map, hide timeline */
   .journey-timeline { display: none; }
-  .journey-map { display: block; }
+  .journey-map { display: flex; }
 
   /* About */
   .about-content {
@@ -939,7 +968,7 @@ ul { list-style: none; }
   /* Testimonials grid */
   .testimonial-cards {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-md);
   }
 
@@ -947,7 +976,7 @@ ul { list-style: none; }
     grid-column: 1 / -1;
     text-align: center;
     max-width: 600px;
-    margin: 0 auto;
+    margin: 0 auto var(--space-sm);
   }
 
   .testimonial-card--featured p { font-size: 22px; }
@@ -973,7 +1002,7 @@ ul { list-style: none; }
 
   .section-intro { font-size: 32px; }
 
-  .projects { padding-top: calc(var(--space-4xl) + 40px); padding-bottom: var(--space-4xl); }
+  .projects { padding-top: calc(var(--space-4xl) + 40px); padding-bottom: calc(var(--space-4xl) + 80px); }
   .about { padding-top: calc(var(--space-4xl) + 40px); padding-bottom: var(--space-4xl); }
 
   .card-title { font-size: 26px; }

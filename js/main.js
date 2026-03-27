@@ -37,13 +37,29 @@
   }
 
   /* ----------------------------------------
-     Pill Nav — Scroll Direction Show/Hide
+     Pill Nav — Morphs to Bar Past Hero
      ---------------------------------------- */
   var navPill = document.getElementById('site-nav');
+  var heroSection = document.getElementById('hero');
   var isDesktop = window.innerWidth >= 768;
 
-  if (isDesktop && navPill) {
+  if (isDesktop && navPill && heroSection) {
     var lastScrollY = 0;
+    var isExpanded = false;
+
+    ScrollTrigger.create({
+      trigger: heroSection,
+      start: 'bottom 80px',
+      onEnter: function () {
+        navPill.classList.add('nav-expanded');
+        isExpanded = true;
+      },
+      onLeaveBack: function () {
+        navPill.classList.remove('nav-expanded');
+        isExpanded = false;
+      }
+    });
+
     ScrollTrigger.create({
       trigger: 'body',
       start: 'top top',
@@ -51,12 +67,13 @@
       onUpdate: function (self) {
         var scrollY = self.scroll();
         var direction = scrollY > lastScrollY ? 'down' : 'up';
-        var pastHero = scrollY > window.innerHeight * 0.8;
 
-        if (pastHero && direction === 'down') {
-          gsap.to(navPill, { y: -100, opacity: 0, duration: 0.3, ease: 'power2.in' });
-        } else if (direction === 'up' || !pastHero) {
-          gsap.to(navPill, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' });
+        if (isExpanded && direction === 'down' && scrollY > window.innerHeight) {
+          gsap.to(navPill, { y: -100, duration: 0.3, ease: 'power2.in' });
+        } else if (direction === 'up' && isExpanded) {
+          gsap.to(navPill, { y: 0, duration: 0.3, ease: 'power2.out' });
+        } else if (!isExpanded) {
+          gsap.set(navPill, { y: 0 });
         }
         lastScrollY = scrollY;
       }
@@ -257,10 +274,19 @@
   if (window.innerWidth >= 768 && typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
     var mapContainer = document.querySelector('.journey-map');
 
-    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-      .then(function (r) { return r.json(); })
-      .then(function (worldData) {
-        var containerWidth = mapContainer.clientWidth || 960;
+    function initMap() {
+      var containerWidth = mapContainer.clientWidth || mapContainer.getBoundingClientRect().width;
+      if (containerWidth < 100) {
+        setTimeout(initMap, 200);
+        return;
+      }
+
+      fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+        .then(function (r) {
+          if (!r.ok) throw new Error('Failed to fetch world data: ' + r.status);
+          return r.json();
+        })
+        .then(function (worldData) {
         var width = Math.min(containerWidth, 1000);
         var height = width * 0.5;
 
@@ -396,13 +422,16 @@
 
         ScrollTrigger.refresh();
       })
-      .catch(function () {
-        /* If D3 map fails, show the mobile timeline as fallback */
+      .catch(function (err) {
+        console.warn('Journey map failed to load:', err);
         var timeline = document.querySelector('.journey-timeline');
         var map = document.querySelector('.journey-map');
         if (timeline) timeline.style.display = 'block';
         if (map) map.style.display = 'none';
       });
+    }
+
+    requestAnimationFrame(function () { initMap(); });
   }
 
   /* ----------------------------------------

@@ -30,7 +30,7 @@
      ---------------------------------------- */
   var lenis;
   if (!prefersReducedMotion && typeof Lenis !== 'undefined') {
-    lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    lenis = new Lenis({ lerp: 0.35, smoothWheel: true });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
     gsap.ticker.lagSmoothing(0);
@@ -250,8 +250,8 @@
           .then(function (worldData) {
             console.log('[Map] TopoJSON loaded, objects:', Object.keys(worldData.objects));
 
-            var width = Math.min(containerWidth, 1000);
-            var height = width * 0.65;
+            var width = Math.min(containerWidth, 1200);
+            var height = width * 0.7;
 
             d3.select('.journey-map svg').remove();
 
@@ -382,8 +382,8 @@
               var mapTl = gsap.timeline({
                 scrollTrigger: {
                   trigger: '.journey',
-                  start: 'top center',
-                  end: 'bottom center',
+                  start: 'top 80%',
+                  end: 'center top',
                   scrub: 1
                 }
               });

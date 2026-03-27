@@ -530,6 +530,10 @@ ul { list-style: none; }
 /* ============================================
    Section 3: Journey
    ============================================ */
+.journey .section-container {
+  max-width: 1400px;
+}
+
 .journey {
   background-color: var(--color-dark-base);
   clip-path: polygon(0 0, 100% 40px, 100% 100%, 0 calc(100% - 40px));
@@ -552,7 +556,7 @@ ul { list-style: none; }
 
 .journey-map svg {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   display: block;
 }
@@ -923,7 +927,7 @@ ul { list-style: none; }
   .journey-timeline { display: none; }
   .journey-map {
     display: flex;
-    min-height: 600px;
+    min-height: 700px;
     width: 100%;
     position: relative;
   }

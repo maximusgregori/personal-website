@@ -275,7 +275,7 @@
       /* Atmosphere glow */
       var glowGeometry = new THREE.SphereGeometry(globeRadius * 1.02, 64, 64);
       var glowMaterial = new THREE.MeshBasicMaterial({
-        color: 0x22D3EE,
+        color: 0x2EC4B6,
         transparent: true,
         opacity: 0.05,
         side: THREE.BackSide
@@ -378,7 +378,7 @@
 
           /* Pins — all visible on load */
           var pinMeshes = [];
-          var pinMaterial = new THREE.MeshBasicMaterial({ color: 0x22D3EE });
+          var pinMaterial = new THREE.MeshBasicMaterial({ color: 0x2EC4B6 });
           var pinGeometry = new THREE.SphereGeometry(0.02, 16, 16);
 
           journeyStops.forEach(function (stop) {
@@ -397,7 +397,7 @@
           );
           var pulseGeometry = new THREE.RingGeometry(0.02, 0.04, 32);
           var pulseMaterial = new THREE.MeshBasicMaterial({
-            color: 0x22D3EE,
+            color: 0x2EC4B6,
             transparent: true,
             opacity: 0.3,
             side: THREE.DoubleSide
@@ -425,7 +425,7 @@
           }
 
           var arcMaterial = new THREE.LineBasicMaterial({
-            color: 0x22D3EE,
+            color: 0x2EC4B6,
             transparent: true,
             opacity: 0.5
           });

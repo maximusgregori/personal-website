@@ -240,7 +240,7 @@
       /* Scene setup */
       var scene = new THREE.Scene();
       var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
-      camera.position.z = 2.5;
+      camera.position.z = 2.8;
 
       var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -249,7 +249,7 @@
 
       function resizeRenderer() {
         var w = mapContainer.clientWidth;
-        var h = Math.max(w * 0.8, 500);
+        var h = Math.max(w * 0.9, 600);
         renderer.setSize(w, h);
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
@@ -293,17 +293,11 @@
         );
       }
 
-      /* Globe rotation target */
+      /* Initial globe rotation (face Atlantic) */
       function lngToRotationY(lng) {
         return -lng * (Math.PI / 180) + Math.PI;
       }
-
-      var targetRotationY = lngToRotationY(journeyStops[0].lng);
-      var targetRotationX = 0;
-      var currentRotationY = targetRotationY;
-      var currentRotationX = 0;
-      var userDragging = false;
-      var userDragTimeout = null;
+      globeGroup.rotation.y = lngToRotationY(-30);
 
       /* Drag-to-rotate (mouse) */
       var isDragging = false;
@@ -311,54 +305,36 @@
 
       renderer.domElement.addEventListener('mousedown', function (e) {
         isDragging = true;
-        userDragging = true;
         previousMousePosition = { x: e.clientX, y: e.clientY };
-        if (userDragTimeout) clearTimeout(userDragTimeout);
       });
 
       window.addEventListener('mousemove', function (e) {
         if (!isDragging) return;
-        var deltaX = e.clientX - previousMousePosition.x;
-        var deltaY = e.clientY - previousMousePosition.y;
-        currentRotationY += deltaX * 0.005;
-        currentRotationX += deltaY * 0.005;
-        currentRotationX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, currentRotationX));
-        globeGroup.rotation.y = currentRotationY;
-        globeGroup.rotation.x = currentRotationX;
+        globeGroup.rotation.y += (e.clientX - previousMousePosition.x) * 0.005;
+        globeGroup.rotation.x += (e.clientY - previousMousePosition.y) * 0.005;
+        globeGroup.rotation.x = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, globeGroup.rotation.x));
         previousMousePosition = { x: e.clientX, y: e.clientY };
       });
 
-      window.addEventListener('mouseup', function () {
-        isDragging = false;
-        userDragTimeout = setTimeout(function () { userDragging = false; }, 3000);
-      });
+      window.addEventListener('mouseup', function () { isDragging = false; });
 
       /* Drag-to-rotate (touch) */
       renderer.domElement.addEventListener('touchstart', function (e) {
         if (e.touches.length === 1) {
           isDragging = true;
-          userDragging = true;
           previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-          if (userDragTimeout) clearTimeout(userDragTimeout);
         }
       }, { passive: true });
 
       renderer.domElement.addEventListener('touchmove', function (e) {
         if (!isDragging || e.touches.length !== 1) return;
-        var deltaX = e.touches[0].clientX - previousMousePosition.x;
-        var deltaY = e.touches[0].clientY - previousMousePosition.y;
-        currentRotationY += deltaX * 0.005;
-        currentRotationX += deltaY * 0.005;
-        currentRotationX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, currentRotationX));
-        globeGroup.rotation.y = currentRotationY;
-        globeGroup.rotation.x = currentRotationX;
+        globeGroup.rotation.y += (e.touches[0].clientX - previousMousePosition.x) * 0.005;
+        globeGroup.rotation.x += (e.touches[0].clientY - previousMousePosition.y) * 0.005;
+        globeGroup.rotation.x = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, globeGroup.rotation.x));
         previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       }, { passive: true });
 
-      renderer.domElement.addEventListener('touchend', function () {
-        isDragging = false;
-        userDragTimeout = setTimeout(function () { userDragging = false; }, 3000);
-      });
+      renderer.domElement.addEventListener('touchend', function () { isDragging = false; });
 
       /* Fetch TopoJSON and build country outlines, pins, arcs */
       fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
@@ -460,52 +436,81 @@
             arcMeshes.push(arc);
           }
 
-          /* Set initial rotation */
-          globeGroup.rotation.y = currentRotationY;
-
-          /* GSAP scroll-driven animation */
+          /* Looping animation or reduced-motion fallback */
           if (!prefersReducedMotion) {
-            ScrollTrigger.create({
-              trigger: '.journey-map-wrapper',
-              start: 'top 90%',
-              end: 'top 20%',
-              scrub: 1,
-              onUpdate: function (self) {
-                var progress = self.progress;
-                var totalStops = journeyStops.length;
-                var activeIndex = Math.min(Math.floor(progress * totalStops), totalStops - 1);
+            pinMeshes.forEach(function (pin) { pin.material.opacity = 0; });
+            arcMeshes.forEach(function (a) { a.material.opacity = 0; });
+            pulseRing.material.opacity = 0;
+            document.querySelectorAll('.sidebar-stop').forEach(function (el) { el.style.opacity = '0.3'; });
 
-                pinMeshes.forEach(function (pin, idx) {
-                  pin.material.opacity = idx <= activeIndex ? 1 : 0;
-                });
+            var loopTl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
 
-                arcMeshes.forEach(function (arcItem, idx) {
-                  arcItem.material.opacity = idx < activeIndex ? 0.5 : 0;
-                });
+            journeyStops.forEach(function (stop, idx) {
+              var position = idx * 1.2;
 
-                document.querySelectorAll('.sidebar-stop').forEach(function (el, idx) {
-                  el.style.opacity = idx <= activeIndex ? '1' : '0.3';
-                });
+              /* Show pin */
+              (function (i) {
+                loopTl.to(pinMeshes[i].material, {
+                  opacity: 1, duration: 0.3,
+                  onUpdate: function () { pinMeshes[i].material.needsUpdate = true; }
+                }, position);
+              })(idx);
 
-                if (!userDragging) {
-                  targetRotationY = lngToRotationY(journeyStops[activeIndex].lng);
-                  targetRotationX = journeyStops[activeIndex].lat * (Math.PI / 180) * 0.3;
-                }
+              /* Highlight sidebar item */
+              loopTl.to('.sidebar-stop[data-index="' + idx + '"]', {
+                opacity: 1, duration: 0.3
+              }, position);
 
-                if (activeIndex === totalStops - 1) {
-                  pulseRing.material.opacity = 0.3;
-                }
+              /* Draw arc to this stop (skip first — no arc leads to it) */
+              if (idx > 0) {
+                (function (i) {
+                  loopTl.to(arcMeshes[i - 1].material, {
+                    opacity: 0.5, duration: 0.4,
+                    onUpdate: function () { arcMeshes[i - 1].material.needsUpdate = true; }
+                  }, position - 0.4);
+                })(idx);
               }
+
+              /* Pulse ring on last stop */
+              if (idx === journeyStops.length - 1) {
+                loopTl.to(pulseMaterial, {
+                  opacity: 0.3, duration: 0.3,
+                  onUpdate: function () { pulseMaterial.needsUpdate = true; }
+                }, position + 0.3);
+              }
+            });
+
+            /* Hold completed state, then fade everything out */
+            var holdPosition = journeyStops.length * 1.2 + 1;
+
+            pinMeshes.forEach(function (pin) {
+              loopTl.to(pin.material, {
+                opacity: 0, duration: 0.8,
+                onUpdate: function () { pin.material.needsUpdate = true; }
+              }, holdPosition + 3);
+            });
+
+            arcMeshes.forEach(function (a) {
+              loopTl.to(a.material, {
+                opacity: 0, duration: 0.8,
+                onUpdate: function () { a.material.needsUpdate = true; }
+              }, holdPosition + 3);
+            });
+
+            loopTl.to(pulseMaterial, {
+              opacity: 0, duration: 0.8,
+              onUpdate: function () { pulseMaterial.needsUpdate = true; }
+            }, holdPosition + 3);
+
+            document.querySelectorAll('.sidebar-stop').forEach(function (el) {
+              loopTl.to(el, { opacity: 0.3, duration: 0.8 }, holdPosition + 3);
             });
           } else {
             pinMeshes.forEach(function (pin) { pin.material.opacity = 1; });
-            arcMeshes.forEach(function (arcItem) { arcItem.material.opacity = 0.5; });
+            arcMeshes.forEach(function (a) { a.material.opacity = 0.5; });
             document.querySelectorAll('.sidebar-stop').forEach(function (el) { el.style.opacity = '1'; });
             pulseRing.material.opacity = 0.3;
-            globeGroup.rotation.y = lngToRotationY(-30);
           }
-
-          ScrollTrigger.refresh();
         })
         .catch(function (err) {
           console.error('[Globe] Failed to load world data:', err);
@@ -518,14 +523,6 @@
       /* Render loop */
       function animate() {
         requestAnimationFrame(animate);
-
-        if (!userDragging) {
-          currentRotationY += (targetRotationY - currentRotationY) * 0.05;
-          currentRotationX += (targetRotationX - currentRotationX) * 0.05;
-          globeGroup.rotation.y = currentRotationY;
-          globeGroup.rotation.x = currentRotationX;
-        }
-
         renderer.render(scene, camera);
       }
       animate();

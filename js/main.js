@@ -14,15 +14,15 @@
      Journey Data
      ---------------------------------------- */
   var journeyStops = [
-    { city: 'Hamburg', country: 'Germany', lat: 53.55, lng: 9.99, label: 'Born', year: '2000' },
-    { city: 'Düsseldorf', country: 'Germany', lat: 51.23, lng: 6.78, label: 'Early childhood', year: '2001' },
-    { city: 'Cape Town', country: 'South Africa', lat: -33.92, lng: 18.42, label: 'Five years in South Africa', year: '2009' },
-    { city: 'New York City', country: 'USA', lat: 40.71, lng: -74.01, label: 'The Browning School, 8th grade', year: '2014' },
-    { city: 'Boca Raton', country: 'USA', lat: 26.36, lng: -80.08, label: "Saint Andrew's School, 9th & 10th grade", year: '2015' },
-    { city: 'New York City', country: 'USA', lat: 40.71, lng: -74.01, label: 'The Browning School, 11th & 12th grade', year: '2017' },
-    { city: 'Austin', country: 'USA', lat: 30.27, lng: -97.74, label: 'UT Austin, McCombs School of Business', year: '2019' },
-    { city: 'Dallas', country: 'USA', lat: 32.78, lng: -96.80, label: 'SCA Health & Integrity HIT', year: '2023' },
-    { city: 'Austin', country: 'USA', lat: 30.27, lng: -97.74, label: 'Constance IT', year: '2025' }
+    { city: 'Hamburg', country: 'Germany', lat: 53.55, lng: 9.99, label: 'Born', sublabel: '', year: '2000' },
+    { city: 'Düsseldorf', country: 'Germany', lat: 51.23, lng: 6.78, label: 'Early childhood', sublabel: '', year: '2001' },
+    { city: 'Cape Town', country: 'South Africa', lat: -33.92, lng: 18.42, label: 'Five years in South Africa', sublabel: '', year: '2009' },
+    { city: 'New York City', country: 'USA', lat: 40.71, lng: -74.01, label: 'The Browning School', sublabel: 'Grade 8', year: '2014' },
+    { city: 'Boca Raton', country: 'USA', lat: 26.36, lng: -80.08, label: "Saint Andrew's School", sublabel: 'Grades 9 & 10', year: '2015' },
+    { city: 'New York City', country: 'USA', lat: 40.71, lng: -74.01, label: 'The Browning School', sublabel: 'Grades 11 & 12', year: '2017' },
+    { city: 'Austin', country: 'USA', lat: 30.27, lng: -97.74, label: 'UT Austin', sublabel: 'McCombs School of Business', year: '2019' },
+    { city: 'Dallas', country: 'USA', lat: 32.78, lng: -96.80, label: 'SCA Health & Integrity HIT', sublabel: '', year: '2023' },
+    { city: 'Austin', country: 'USA', lat: 30.27, lng: -97.74, label: 'Constance IT', sublabel: '', year: '2025' }
   ];
 
   /* ----------------------------------------
@@ -207,10 +207,16 @@
         var div = document.createElement('div');
         div.className = 'sidebar-stop';
         div.setAttribute('data-index', idx);
+
+        var sublabelHtml = stop.sublabel
+          ? '<span class="sidebar-sublabel">' + stop.sublabel + '</span>'
+          : '';
+
         div.innerHTML = '<span class="sidebar-year">' + stop.year + '</span>' +
           '<div class="sidebar-detail">' +
           '<span class="sidebar-city">' + stop.city + ', ' + stop.country + '</span>' +
           '<span class="sidebar-label">' + stop.label + '</span>' +
+          sublabelHtml +
           '</div>';
         div.style.opacity = '1';
         sidebarContainer.appendChild(div);
@@ -295,7 +301,7 @@
 
       /* Initial globe rotation (face Atlantic) */
       function lngToRotationY(lng) {
-        return -lng * (Math.PI / 180) + Math.PI;
+        return -Math.PI / 2 - lng * (Math.PI / 180);
       }
       globeGroup.rotation.y = lngToRotationY(-30);
 

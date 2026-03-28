@@ -981,15 +981,18 @@ ul { list-style: none; }
   /* About */
   .about-content {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     gap: var(--space-xl);
   }
 
   .about-photo {
     flex: 0 0 40%;
     max-width: 360px;
-    position: sticky;
-    top: calc(80px + var(--space-md));
+  }
+
+  .about-headshot {
+    aspect-ratio: auto;
+    height: 100%;
   }
 
   .about-text { flex: 1; }

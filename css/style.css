@@ -554,35 +554,15 @@ ul { list-style: none; }
   font-size: 14px;
 }
 
-.journey-map svg {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+.journey-map canvas {
   display: block;
+  width: 100%;
+  height: auto;
+  cursor: grab;
 }
 
-.journey-map .land {
-  fill: rgba(255, 255, 255, 0.03);
-  stroke: rgba(255, 255, 255, 0.06);
-  stroke-width: 0.5;
-}
-
-.journey-map .connection-line {
-  fill: none;
-  stroke: var(--color-accent-primary);
-  stroke-opacity: 0.5;
-  stroke-width: 2;
-  filter: drop-shadow(0 0 3px rgba(34, 211, 238, 0.3));
-}
-
-.journey-map .pin {
-  fill: var(--color-accent-primary);
-  cursor: default;
-}
-
-.journey-map .pin-pulse {
-  fill: var(--color-accent-primary);
-  opacity: 0.3;
+.journey-map canvas:active {
+  cursor: grabbing;
 }
 
 /* Sidebar items */
@@ -1033,6 +1013,15 @@ ul { list-style: none; }
   .about { padding-top: calc(var(--space-4xl) + 40px); padding-bottom: var(--space-4xl); }
 
   .card-title { font-size: 26px; }
+
+  .project-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    gap: var(--space-lg);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
 
   .testimonial-cards {
     grid-template-columns: repeat(3, 1fr);

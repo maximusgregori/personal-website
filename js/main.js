@@ -1,6 +1,6 @@
 /* ============================================
    Main JavaScript
-   GSAP + ScrollTrigger + SplitType + Lenis + D3
+   GSAP + ScrollTrigger + SplitType + Lenis + Three.js
    ============================================ */
 
 (function () {
@@ -195,22 +195,34 @@
   } /* end !prefersReducedMotion */
 
   /* ----------------------------------------
-     D3 Journey Map (Desktop only)
+     Three.js Journey Globe (Desktop only)
      ---------------------------------------- */
   if (window.innerWidth >= 768) {
-    console.log('[Map] Desktop detected, checking dependencies...');
 
-    function waitForDepsAndInit(attempts) {
-      console.log('[Map] d3 available:', typeof d3 !== 'undefined');
-      console.log('[Map] topojson available:', typeof topojson !== 'undefined');
+    /* Generate sidebar items (independent of globe) */
+    var sidebarContainer = document.querySelector('.journey-sidebar');
+    if (sidebarContainer) {
+      sidebarContainer.innerHTML = '';
+      journeyStops.forEach(function (stop, idx) {
+        var div = document.createElement('div');
+        div.className = 'sidebar-stop';
+        div.setAttribute('data-index', idx);
+        div.innerHTML = '<span class="sidebar-year">' + stop.year + '</span>' +
+          '<div class="sidebar-detail">' +
+          '<span class="sidebar-city">' + stop.city + ', ' + stop.country + '</span>' +
+          '<span class="sidebar-label">' + stop.label + '</span>' +
+          '</div>';
+        div.style.opacity = '0.3';
+        sidebarContainer.appendChild(div);
+      });
+    }
 
-      if (typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
-        startMapInit();
+    function waitForThreeAndInit(attempts) {
+      if (typeof THREE !== 'undefined' && typeof topojson !== 'undefined') {
+        initGlobe();
       } else if (attempts > 0) {
-        console.log('[Map] Dependencies not ready, retrying in 500ms... (' + attempts + ' attempts left)');
-        setTimeout(function () { waitForDepsAndInit(attempts - 1); }, 500);
+        setTimeout(function () { waitForThreeAndInit(attempts - 1); }, 500);
       } else {
-        console.error('[Map] Dependencies failed to load after all retries');
         var timeline = document.querySelector('.journey-timeline');
         var wrapper = document.querySelector('.journey-map-wrapper');
         if (timeline) timeline.style.display = 'block';
@@ -218,202 +230,309 @@
       }
     }
 
-    function startMapInit() {
+    function initGlobe() {
       var mapContainer = document.querySelector('.journey-map');
-      console.log('[Map] Container found:', !!mapContainer);
-      console.log('[Map] Container display:', window.getComputedStyle(mapContainer).display);
-      console.log('[Map] Container dimensions:', mapContainer.clientWidth, 'x', mapContainer.clientHeight);
+      if (!mapContainer) return;
 
-      function initMap() {
-        console.log('[Map] initMap() called');
-        mapContainer.style.display = 'flex';
+      var loadingEl = mapContainer.querySelector('.journey-map-loading');
+      if (loadingEl) loadingEl.remove();
 
-        var containerWidth = mapContainer.clientWidth || mapContainer.getBoundingClientRect().width;
-        console.log('[Map] Container width:', containerWidth);
+      /* Scene setup */
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+      camera.position.z = 2.5;
 
-        if (containerWidth < 100) {
-          console.log('[Map] Container too narrow, retrying in 500ms...');
-          setTimeout(initMap, 500);
-          return;
-        }
+      var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
+      mapContainer.appendChild(renderer.domElement);
 
-        var loadingEl = mapContainer.querySelector('.journey-map-loading');
-        if (loadingEl) loadingEl.remove();
+      function resizeRenderer() {
+        var w = mapContainer.clientWidth;
+        var h = Math.max(w * 0.8, 500);
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      resizeRenderer();
+      window.addEventListener('resize', resizeRenderer);
 
-        console.log('[Map] Fetching TopoJSON...');
-        fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-          .then(function (r) {
-            console.log('[Map] Fetch response:', r.status, r.ok);
-            if (!r.ok) throw new Error('HTTP ' + r.status);
-            return r.json();
-          })
-          .then(function (worldData) {
-            console.log('[Map] TopoJSON loaded, objects:', Object.keys(worldData.objects));
+      /* Globe group — all rotating objects are children */
+      var globeGroup = new THREE.Group();
+      scene.add(globeGroup);
 
-            var width = Math.min(containerWidth, 1200);
-            var height = width * 0.7;
+      /* Globe sphere */
+      var globeRadius = 1;
+      var globeGeometry = new THREE.SphereGeometry(globeRadius, 64, 64);
+      var globeMaterial = new THREE.MeshBasicMaterial({
+        color: 0x1a2744,
+        transparent: true,
+        opacity: 0.9
+      });
+      var globe = new THREE.Mesh(globeGeometry, globeMaterial);
+      globeGroup.add(globe);
 
-            d3.select('.journey-map svg').remove();
+      /* Atmosphere glow */
+      var glowGeometry = new THREE.SphereGeometry(globeRadius * 1.02, 64, 64);
+      var glowMaterial = new THREE.MeshBasicMaterial({
+        color: 0x22D3EE,
+        transparent: true,
+        opacity: 0.05,
+        side: THREE.BackSide
+      });
+      globeGroup.add(new THREE.Mesh(glowGeometry, glowMaterial));
 
-            var svg = d3.select('.journey-map')
-              .append('svg')
-              .attr('viewBox', '0 0 ' + width + ' ' + height)
-              .attr('preserveAspectRatio', 'xMidYMid meet')
-              .attr('role', 'img')
-              .attr('aria-label', 'World map showing journey across three continents')
-              .style('width', '100%')
-              .style('max-width', width + 'px')
-              .style('display', 'block')
-              .style('margin', '0 auto');
-
-            console.log('[Map] SVG created');
-
-            var journeyBounds = {
-              type: 'Feature',
-              geometry: {
-                type: 'Polygon',
-                coordinates: [[
-                  [-110, -45],
-                  [30, -45],
-                  [30, 60],
-                  [-110, 60],
-                  [-110, -45]
-                ]]
-              }
-            };
-
-            var projection = d3.geoNaturalEarth1()
-              .fitExtent([[40, 20], [width - 40, height - 20]], journeyBounds)
-              .precision(0.2);
-
-            var pathGen = d3.geoPath(projection);
-            var land = topojson.feature(worldData, worldData.objects.countries);
-            console.log('[Map] Land features:', land.features.length);
-
-            svg.append('g')
-              .selectAll('path')
-              .data(land.features)
-              .join('path')
-              .attr('class', 'land')
-              .attr('d', pathGen);
-
-            var linesGroup = svg.append('g');
-            var connectionPaths = [];
-
-            for (var i = 0; i < journeyStops.length - 1; i++) {
-              var from = journeyStops[i];
-              var to = journeyStops[i + 1];
-              var lineFeature = {
-                type: 'Feature',
-                geometry: {
-                  type: 'LineString',
-                  coordinates: [[from.lng, from.lat], [to.lng, to.lat]]
-                }
-              };
-
-              var linePath = linesGroup.append('path')
-                .attr('class', 'connection-line')
-                .attr('d', pathGen(lineFeature));
-
-              var totalLen = linePath.node().getTotalLength();
-              linePath
-                .attr('stroke-dasharray', totalLen)
-                .attr('stroke-dashoffset', totalLen);
-
-              connectionPaths.push(linePath.node());
-            }
-
-            var pinsGroup = svg.append('g');
-            var pinElements = [];
-
-            journeyStops.forEach(function (stop, idx) {
-              var coords = projection([stop.lng, stop.lat]);
-              if (!coords) { console.warn('[Map] No coords for:', stop.city); return; }
-
-              var g = pinsGroup.append('g').attr('transform', 'translate(' + coords[0] + ',' + coords[1] + ')');
-
-              if (idx === journeyStops.length - 1) {
-                g.append('circle').attr('class', 'pin-pulse').attr('r', 12).style('opacity', 0);
-              }
-
-              g.append('circle').attr('class', 'pin').attr('r', 6).style('opacity', 0);
-              pinElements.push(g.node());
-            });
-
-            /* Generate sidebar items */
-            var sidebarContainer = document.querySelector('.journey-sidebar');
-            if (sidebarContainer) {
-              sidebarContainer.innerHTML = '';
-              journeyStops.forEach(function (stop, idx) {
-                var div = document.createElement('div');
-                div.className = 'sidebar-stop';
-                div.setAttribute('data-index', idx);
-                div.innerHTML = '<span class="sidebar-year">' + stop.year + '</span>' +
-                  '<div class="sidebar-detail">' +
-                  '<span class="sidebar-city">' + stop.city + ', ' + stop.country + '</span>' +
-                  '<span class="sidebar-label">' + stop.label + '</span>' +
-                  '</div>';
-                div.style.opacity = '0.3';
-                sidebarContainer.appendChild(div);
-              });
-            }
-
-            console.log('[Map] Pins:', pinElements.length, 'Lines:', connectionPaths.length);
-
-            if (!prefersReducedMotion) {
-              var mapTl = gsap.timeline({
-                scrollTrigger: {
-                  trigger: '.journey-map-wrapper',
-                  start: 'top 90%',
-                  end: 'top 20%',
-                  scrub: 1
-                }
-              });
-
-              mapTl.to(pinElements[0].querySelector('.pin'), { opacity: 1, duration: 0.03 }, 0);
-              mapTl.to('.sidebar-stop[data-index="0"]', { opacity: 1, duration: 0.03 }, 0);
-
-              var totalSteps = connectionPaths.length;
-              connectionPaths.forEach(function (pathEl, idx) {
-                var startPos = (idx + 0.3) / (totalSteps + 0.5);
-                var endPos = (idx + 1) / (totalSteps + 0.5);
-                mapTl.to(pathEl, { strokeDashoffset: 0, ease: 'none' }, startPos);
-                mapTl.to(pinElements[idx + 1].querySelector('.pin'), { opacity: 1, duration: 0.02 }, endPos);
-                mapTl.to('.sidebar-stop[data-index="' + (idx + 1) + '"]', { opacity: 1, duration: 0.03 }, endPos);
-              });
-
-              var finalPulse = pinElements[pinElements.length - 1].querySelector('.pin-pulse');
-              if (finalPulse) {
-                mapTl.to(finalPulse, { opacity: 0.3, duration: 0.1 }, 0.92);
-              }
-            } else {
-              connectionPaths.forEach(function (p) { p.setAttribute('stroke-dashoffset', 0); });
-              pinElements.forEach(function (g) { g.querySelector('.pin').style.opacity = 1; });
-              document.querySelectorAll('.sidebar-stop').forEach(function (el) { el.style.opacity = '1'; });
-            }
-
-            ScrollTrigger.refresh();
-            console.log('[Map] Render complete!');
-          })
-          .catch(function (err) {
-            console.error('[Map] FAILED:', err);
-            var timeline = document.querySelector('.journey-timeline');
-            var map = document.querySelector('.journey-map');
-            if (timeline) timeline.style.display = 'block';
-            if (map) {
-              var loadingFallback = map.querySelector('.journey-map-loading');
-              if (loadingFallback) loadingFallback.textContent = 'Map could not load. Showing timeline instead.';
-            }
-          });
+      /* Lat/lng to 3D point on sphere */
+      function latLngToVec3(lat, lng, radius) {
+        var phi = (90 - lat) * (Math.PI / 180);
+        var theta = (lng + 180) * (Math.PI / 180);
+        return new THREE.Vector3(
+          -(radius * Math.sin(phi) * Math.cos(theta)),
+          radius * Math.cos(phi),
+          radius * Math.sin(phi) * Math.sin(theta)
+        );
       }
 
-      requestAnimationFrame(function () {
-        setTimeout(function () { initMap(); }, 100);
+      /* Globe rotation target */
+      function lngToRotationY(lng) {
+        return -lng * (Math.PI / 180) + Math.PI;
+      }
+
+      var targetRotationY = lngToRotationY(journeyStops[0].lng);
+      var targetRotationX = 0;
+      var currentRotationY = targetRotationY;
+      var currentRotationX = 0;
+      var userDragging = false;
+      var userDragTimeout = null;
+
+      /* Drag-to-rotate (mouse) */
+      var isDragging = false;
+      var previousMousePosition = { x: 0, y: 0 };
+
+      renderer.domElement.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        userDragging = true;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+        if (userDragTimeout) clearTimeout(userDragTimeout);
       });
+
+      window.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+        var deltaX = e.clientX - previousMousePosition.x;
+        var deltaY = e.clientY - previousMousePosition.y;
+        currentRotationY += deltaX * 0.005;
+        currentRotationX += deltaY * 0.005;
+        currentRotationX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, currentRotationX));
+        globeGroup.rotation.y = currentRotationY;
+        globeGroup.rotation.x = currentRotationX;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      });
+
+      window.addEventListener('mouseup', function () {
+        isDragging = false;
+        userDragTimeout = setTimeout(function () { userDragging = false; }, 3000);
+      });
+
+      /* Drag-to-rotate (touch) */
+      renderer.domElement.addEventListener('touchstart', function (e) {
+        if (e.touches.length === 1) {
+          isDragging = true;
+          userDragging = true;
+          previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+          if (userDragTimeout) clearTimeout(userDragTimeout);
+        }
+      }, { passive: true });
+
+      renderer.domElement.addEventListener('touchmove', function (e) {
+        if (!isDragging || e.touches.length !== 1) return;
+        var deltaX = e.touches[0].clientX - previousMousePosition.x;
+        var deltaY = e.touches[0].clientY - previousMousePosition.y;
+        currentRotationY += deltaX * 0.005;
+        currentRotationX += deltaY * 0.005;
+        currentRotationX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, currentRotationX));
+        globeGroup.rotation.y = currentRotationY;
+        globeGroup.rotation.x = currentRotationX;
+        previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }, { passive: true });
+
+      renderer.domElement.addEventListener('touchend', function () {
+        isDragging = false;
+        userDragTimeout = setTimeout(function () { userDragging = false; }, 3000);
+      });
+
+      /* Fetch TopoJSON and build country outlines, pins, arcs */
+      fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+        .then(function (r) { return r.json(); })
+        .then(function (worldData) {
+          var countries = topojson.feature(worldData, worldData.objects.countries);
+
+          /* Country outlines */
+          var lineMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.15
+          });
+
+          countries.features.forEach(function (feature) {
+            var coords = feature.geometry.type === 'Polygon'
+              ? [feature.geometry.coordinates]
+              : feature.geometry.coordinates;
+
+            coords.forEach(function (polygon) {
+              polygon.forEach(function (ring) {
+                var points = [];
+                var step = Math.max(1, Math.floor(ring.length / 80));
+                for (var i = 0; i < ring.length; i += step) {
+                  points.push(latLngToVec3(ring[i][1], ring[i][0], globeRadius * 1.001));
+                }
+                if (points.length > 1) {
+                  points.push(points[0].clone());
+                }
+                var geometry = new THREE.BufferGeometry().setFromPoints(points);
+                globeGroup.add(new THREE.Line(geometry, lineMaterial));
+              });
+            });
+          });
+
+          /* Pins */
+          var pinMeshes = [];
+          var pinMaterial = new THREE.MeshBasicMaterial({ color: 0x22D3EE });
+          var pinGeometry = new THREE.SphereGeometry(0.02, 16, 16);
+
+          journeyStops.forEach(function (stop) {
+            var pos = latLngToVec3(stop.lat, stop.lng, globeRadius * 1.01);
+            var pin = new THREE.Mesh(pinGeometry, pinMaterial.clone());
+            pin.position.copy(pos);
+            pin.material.transparent = true;
+            pin.material.opacity = 0;
+            globeGroup.add(pin);
+            pinMeshes.push(pin);
+          });
+
+          /* Pulse ring on last pin */
+          var lastPos = latLngToVec3(
+            journeyStops[journeyStops.length - 1].lat,
+            journeyStops[journeyStops.length - 1].lng,
+            globeRadius * 1.01
+          );
+          var pulseGeometry = new THREE.RingGeometry(0.02, 0.04, 32);
+          var pulseMaterial = new THREE.MeshBasicMaterial({
+            color: 0x22D3EE,
+            transparent: true,
+            opacity: 0,
+            side: THREE.DoubleSide
+          });
+          var pulseRing = new THREE.Mesh(pulseGeometry, pulseMaterial);
+          pulseRing.position.copy(lastPos);
+          pulseRing.lookAt(new THREE.Vector3(0, 0, 0));
+          globeGroup.add(pulseRing);
+
+          /* Connection arcs */
+          function createArc(start, end, radius, segments) {
+            var startVec = latLngToVec3(start.lat, start.lng, radius);
+            var endVec = latLngToVec3(end.lat, end.lng, radius);
+            var points = [];
+
+            for (var i = 0; i <= segments; i++) {
+              var t = i / segments;
+              var point = new THREE.Vector3().copy(startVec).lerp(endVec, t).normalize();
+              var lift = 1 + 0.08 * Math.sin(t * Math.PI);
+              point.multiplyScalar(radius * lift);
+              points.push(point);
+            }
+
+            return points;
+          }
+
+          var arcMeshes = [];
+          var arcMaterial = new THREE.LineBasicMaterial({
+            color: 0x22D3EE,
+            transparent: true,
+            opacity: 0.5
+          });
+
+          for (var i = 0; i < journeyStops.length - 1; i++) {
+            var arcPoints = createArc(journeyStops[i], journeyStops[i + 1], globeRadius, 50);
+            var arcGeo = new THREE.BufferGeometry().setFromPoints(arcPoints);
+            var arc = new THREE.Line(arcGeo, arcMaterial.clone());
+            arc.material.opacity = 0;
+            globeGroup.add(arc);
+            arcMeshes.push(arc);
+          }
+
+          /* Set initial rotation */
+          globeGroup.rotation.y = currentRotationY;
+
+          /* GSAP scroll-driven animation */
+          if (!prefersReducedMotion) {
+            ScrollTrigger.create({
+              trigger: '.journey-map-wrapper',
+              start: 'top 90%',
+              end: 'top 20%',
+              scrub: 1,
+              onUpdate: function (self) {
+                var progress = self.progress;
+                var totalStops = journeyStops.length;
+                var activeIndex = Math.min(Math.floor(progress * totalStops), totalStops - 1);
+
+                pinMeshes.forEach(function (pin, idx) {
+                  pin.material.opacity = idx <= activeIndex ? 1 : 0;
+                });
+
+                arcMeshes.forEach(function (arcItem, idx) {
+                  arcItem.material.opacity = idx < activeIndex ? 0.5 : 0;
+                });
+
+                document.querySelectorAll('.sidebar-stop').forEach(function (el, idx) {
+                  el.style.opacity = idx <= activeIndex ? '1' : '0.3';
+                });
+
+                if (!userDragging) {
+                  targetRotationY = lngToRotationY(journeyStops[activeIndex].lng);
+                  targetRotationX = journeyStops[activeIndex].lat * (Math.PI / 180) * 0.3;
+                }
+
+                if (activeIndex === totalStops - 1) {
+                  pulseRing.material.opacity = 0.3;
+                }
+              }
+            });
+          } else {
+            pinMeshes.forEach(function (pin) { pin.material.opacity = 1; });
+            arcMeshes.forEach(function (arcItem) { arcItem.material.opacity = 0.5; });
+            document.querySelectorAll('.sidebar-stop').forEach(function (el) { el.style.opacity = '1'; });
+            pulseRing.material.opacity = 0.3;
+            globeGroup.rotation.y = lngToRotationY(-30);
+          }
+
+          ScrollTrigger.refresh();
+        })
+        .catch(function (err) {
+          console.error('[Globe] Failed to load world data:', err);
+          var timeline = document.querySelector('.journey-timeline');
+          var wrapper = document.querySelector('.journey-map-wrapper');
+          if (timeline) timeline.style.display = 'block';
+          if (wrapper) wrapper.style.display = 'none';
+        });
+
+      /* Render loop */
+      function animate() {
+        requestAnimationFrame(animate);
+
+        if (!userDragging) {
+          currentRotationY += (targetRotationY - currentRotationY) * 0.05;
+          currentRotationX += (targetRotationX - currentRotationX) * 0.05;
+          globeGroup.rotation.y = currentRotationY;
+          globeGroup.rotation.x = currentRotationX;
+        }
+
+        renderer.render(scene, camera);
+      }
+      animate();
     }
 
     requestAnimationFrame(function () {
-      setTimeout(function () { waitForDepsAndInit(5); }, 100);
+      setTimeout(function () { waitForThreeAndInit(5); }, 100);
     });
   }
 

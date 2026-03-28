@@ -18,8 +18,8 @@
     { city: 'Düsseldorf', country: 'Germany', lat: 51.23, lng: 6.78, label: 'Early childhood', year: '2001' },
     { city: 'Cape Town', country: 'South Africa', lat: -33.92, lng: 18.42, label: 'Five years in South Africa', year: '2009' },
     { city: 'New York City', country: 'USA', lat: 40.71, lng: -74.01, label: 'The Browning School, 8th grade', year: '2014' },
-    { city: 'Boca Raton', country: 'USA', lat: 26.36, lng: -80.08, label: "Saint Andrew's School", year: '2015' },
-    { city: 'New York City', country: 'USA', lat: 40.71, lng: -74.01, label: 'The Browning School, junior & senior year', year: '2017' },
+    { city: 'Boca Raton', country: 'USA', lat: 26.36, lng: -80.08, label: "Saint Andrew's School, 9th & 10th grade", year: '2015' },
+    { city: 'New York City', country: 'USA', lat: 40.71, lng: -74.01, label: 'The Browning School, 11th & 12th grade', year: '2017' },
     { city: 'Austin', country: 'USA', lat: 30.27, lng: -97.74, label: 'UT Austin, McCombs School of Business', year: '2019' },
     { city: 'Dallas', country: 'USA', lat: 32.78, lng: -96.80, label: 'SCA Health & Integrity HIT', year: '2023' },
     { city: 'Austin', country: 'USA', lat: 30.27, lng: -97.74, label: 'Constance IT', year: '2025' }
@@ -212,7 +212,7 @@
           '<span class="sidebar-city">' + stop.city + ', ' + stop.country + '</span>' +
           '<span class="sidebar-label">' + stop.label + '</span>' +
           '</div>';
-        div.style.opacity = '0.3';
+        div.style.opacity = '1';
         sidebarContainer.appendChild(div);
       });
     }
@@ -299,12 +299,17 @@
       }
       globeGroup.rotation.y = lngToRotationY(-30);
 
+      /* Click-to-navigate rotation state */
+      var rotationTarget = { y: globeGroup.rotation.y, x: globeGroup.rotation.x };
+      var isAnimatingToTarget = false;
+
       /* Drag-to-rotate (mouse) */
       var isDragging = false;
       var previousMousePosition = { x: 0, y: 0 };
 
       renderer.domElement.addEventListener('mousedown', function (e) {
         isDragging = true;
+        isAnimatingToTarget = false;
         previousMousePosition = { x: e.clientX, y: e.clientY };
       });
 
@@ -322,6 +327,7 @@
       renderer.domElement.addEventListener('touchstart', function (e) {
         if (e.touches.length === 1) {
           isDragging = true;
+          isAnimatingToTarget = false;
           previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         }
       }, { passive: true });
@@ -370,7 +376,7 @@
             });
           });
 
-          /* Pins */
+          /* Pins — all visible on load */
           var pinMeshes = [];
           var pinMaterial = new THREE.MeshBasicMaterial({ color: 0x22D3EE });
           var pinGeometry = new THREE.SphereGeometry(0.02, 16, 16);
@@ -379,13 +385,11 @@
             var pos = latLngToVec3(stop.lat, stop.lng, globeRadius * 1.01);
             var pin = new THREE.Mesh(pinGeometry, pinMaterial.clone());
             pin.position.copy(pos);
-            pin.material.transparent = true;
-            pin.material.opacity = 0;
             globeGroup.add(pin);
             pinMeshes.push(pin);
           });
 
-          /* Pulse ring on last pin */
+          /* Pulse ring on last pin — visible on load */
           var lastPos = latLngToVec3(
             journeyStops[journeyStops.length - 1].lat,
             journeyStops[journeyStops.length - 1].lng,
@@ -395,7 +399,7 @@
           var pulseMaterial = new THREE.MeshBasicMaterial({
             color: 0x22D3EE,
             transparent: true,
-            opacity: 0,
+            opacity: 0.3,
             side: THREE.DoubleSide
           });
           var pulseRing = new THREE.Mesh(pulseGeometry, pulseMaterial);
@@ -403,7 +407,7 @@
           pulseRing.lookAt(new THREE.Vector3(0, 0, 0));
           globeGroup.add(pulseRing);
 
-          /* Connection arcs */
+          /* Connection arcs — all visible on load */
           function createArc(start, end, radius, segments) {
             var startVec = latLngToVec3(start.lat, start.lng, radius);
             var endVec = latLngToVec3(end.lat, end.lng, radius);
@@ -420,7 +424,6 @@
             return points;
           }
 
-          var arcMeshes = [];
           var arcMaterial = new THREE.LineBasicMaterial({
             color: 0x22D3EE,
             transparent: true,
@@ -431,86 +434,31 @@
             var arcPoints = createArc(journeyStops[i], journeyStops[i + 1], globeRadius, 50);
             var arcGeo = new THREE.BufferGeometry().setFromPoints(arcPoints);
             var arc = new THREE.Line(arcGeo, arcMaterial.clone());
-            arc.material.opacity = 0;
+            arc.material.opacity = 0.5;
             globeGroup.add(arc);
-            arcMeshes.push(arc);
           }
 
-          /* Looping animation or reduced-motion fallback */
-          if (!prefersReducedMotion) {
-            pinMeshes.forEach(function (pin) { pin.material.opacity = 0; });
-            arcMeshes.forEach(function (a) { a.material.opacity = 0; });
-            pulseRing.material.opacity = 0;
-            document.querySelectorAll('.sidebar-stop').forEach(function (el) { el.style.opacity = '0.3'; });
+          /* Sidebar click-to-navigate */
+          document.querySelectorAll('.sidebar-stop').forEach(function (el) {
+            el.addEventListener('click', function () {
+              var idx = parseInt(this.getAttribute('data-index'));
+              var stop = journeyStops[idx];
 
-            var loopTl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
-
-            journeyStops.forEach(function (stop, idx) {
-              var position = idx * 1.2;
-
-              /* Show pin */
-              (function (i) {
-                loopTl.to(pinMeshes[i].material, {
-                  opacity: 1, duration: 0.3,
-                  onUpdate: function () { pinMeshes[i].material.needsUpdate = true; }
-                }, position);
-              })(idx);
-
-              /* Highlight sidebar item */
-              loopTl.to('.sidebar-stop[data-index="' + idx + '"]', {
-                opacity: 1, duration: 0.3
-              }, position);
-
-              /* Draw arc to this stop (skip first — no arc leads to it) */
-              if (idx > 0) {
-                (function (i) {
-                  loopTl.to(arcMeshes[i - 1].material, {
-                    opacity: 0.5, duration: 0.4,
-                    onUpdate: function () { arcMeshes[i - 1].material.needsUpdate = true; }
-                  }, position - 0.4);
-                })(idx);
+              if (prefersReducedMotion) {
+                globeGroup.rotation.y = lngToRotationY(stop.lng);
+                globeGroup.rotation.x = stop.lat * (Math.PI / 180) * 0.3;
+              } else {
+                rotationTarget.y = lngToRotationY(stop.lng);
+                rotationTarget.x = stop.lat * (Math.PI / 180) * 0.3;
+                isAnimatingToTarget = true;
               }
 
-              /* Pulse ring on last stop */
-              if (idx === journeyStops.length - 1) {
-                loopTl.to(pulseMaterial, {
-                  opacity: 0.3, duration: 0.3,
-                  onUpdate: function () { pulseMaterial.needsUpdate = true; }
-                }, position + 0.3);
-              }
+              document.querySelectorAll('.sidebar-stop').forEach(function (s) {
+                s.classList.remove('active');
+              });
+              this.classList.add('active');
             });
-
-            /* Hold completed state, then fade everything out */
-            var holdPosition = journeyStops.length * 1.2 + 1;
-
-            pinMeshes.forEach(function (pin) {
-              loopTl.to(pin.material, {
-                opacity: 0, duration: 0.8,
-                onUpdate: function () { pin.material.needsUpdate = true; }
-              }, holdPosition + 3);
-            });
-
-            arcMeshes.forEach(function (a) {
-              loopTl.to(a.material, {
-                opacity: 0, duration: 0.8,
-                onUpdate: function () { a.material.needsUpdate = true; }
-              }, holdPosition + 3);
-            });
-
-            loopTl.to(pulseMaterial, {
-              opacity: 0, duration: 0.8,
-              onUpdate: function () { pulseMaterial.needsUpdate = true; }
-            }, holdPosition + 3);
-
-            document.querySelectorAll('.sidebar-stop').forEach(function (el) {
-              loopTl.to(el, { opacity: 0.3, duration: 0.8 }, holdPosition + 3);
-            });
-          } else {
-            pinMeshes.forEach(function (pin) { pin.material.opacity = 1; });
-            arcMeshes.forEach(function (a) { a.material.opacity = 0.5; });
-            document.querySelectorAll('.sidebar-stop').forEach(function (el) { el.style.opacity = '1'; });
-            pulseRing.material.opacity = 0.3;
-          }
+          });
         })
         .catch(function (err) {
           console.error('[Globe] Failed to load world data:', err);
@@ -523,6 +471,24 @@
       /* Render loop */
       function animate() {
         requestAnimationFrame(animate);
+
+        if (isAnimatingToTarget && !isDragging) {
+          var dy = rotationTarget.y - globeGroup.rotation.y;
+          var dx = rotationTarget.x - globeGroup.rotation.x;
+
+          while (dy > Math.PI) dy -= Math.PI * 2;
+          while (dy < -Math.PI) dy += Math.PI * 2;
+
+          globeGroup.rotation.y += dy * 0.06;
+          globeGroup.rotation.x += dx * 0.06;
+
+          if (Math.abs(dy) < 0.005 && Math.abs(dx) < 0.005) {
+            globeGroup.rotation.y = rotationTarget.y;
+            globeGroup.rotation.x = rotationTarget.x;
+            isAnimatingToTarget = false;
+          }
+        }
+
         renderer.render(scene, camera);
       }
       animate();

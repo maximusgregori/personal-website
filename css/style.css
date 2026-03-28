@@ -574,6 +574,23 @@ ul { list-style: none; }
   border-left: 2px solid rgba(255, 255, 255, 0.1);
   position: relative;
   transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.sidebar-stop:hover {
+  opacity: 0.8;
+}
+
+.sidebar-stop.active .sidebar-year {
+  color: #fff;
+}
+
+.sidebar-stop.active .sidebar-city {
+  color: #fff;
+}
+
+.sidebar-stop.active::before {
+  background: var(--color-accent-primary);
 }
 
 .sidebar-stop::before {

@@ -19,41 +19,78 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Sora:wght@300;600;700&display=swap" rel="stylesheet">
 
-  <!-- Site CSS -->
+  <!-- Tailwind CSS (Play CDN) + theme config matching existing design tokens -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Sora', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            'dark-base': '#0F172A',
+            'light-base': '#F4F4F4',
+            'accent': '#2EC4B6',
+            'accent-dark': '#26A89C',
+            'accent-secondary': '#034BDC',
+            'accent-on-light': '#148A7E',
+            'text-light-bg': '#1E293B',
+            'text-dark-bg': '#E2E8F0',
+            'text-muted-dark': '#94A3B8',
+            'text-muted-light': '#64748B',
+            'text-body-muted': '#475569',
+          },
+          spacing: {
+            'xs': '8px',
+            'sm': '16px',
+            'md': '24px',
+            'lg': '32px',
+            'xl': '48px',
+            '2xl': '64px',
+            '3xl': '80px',
+            '4xl': '96px',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Site CSS (now minimal: only what Tailwind can't express) -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="font-body text-base leading-relaxed text-text-light-bg bg-dark-base antialiased overflow-x-hidden">
 
   <div class="scroll-progress" aria-hidden="true"></div>
 
   <!-- Site Navigation -->
-  <header class="site-header" id="site-nav" aria-label="Main navigation">
-    <nav class="nav-inner">
-      <a href="#hero" class="nav-logo">MG</a>
-      <div class="nav-links">
-        <a href="#work">Work</a>
-        <a href="#journey">Journey</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+  <header class="site-header fixed top-0 left-0 right-0 z-[100] h-14 md:h-16 bg-dark-base/85 backdrop-blur-[12px] md:bg-dark-base/[0.92] md:backdrop-blur-[20px] md:border-b md:border-white/[0.06] md:-translate-y-full md:transition-transform md:duration-300" id="site-nav" aria-label="Main navigation">
+    <nav class="max-w-[1200px] mx-auto px-md h-full flex items-center justify-between">
+      <a href="#hero" class="font-heading font-bold text-base text-text-dark-bg w-9 h-9 flex items-center justify-center border border-white/15 rounded-full min-h-[48px] min-w-[48px]">MG</a>
+      <div class="nav-links hidden md:flex gap-1">
+        <a href="#work" class="font-body text-sm text-text-muted-dark px-sm min-h-[48px] flex items-center relative transition-colors duration-200 hover:text-accent">Work</a>
+        <a href="#journey" class="font-body text-sm text-text-muted-dark px-sm min-h-[48px] flex items-center relative transition-colors duration-200 hover:text-accent">Journey</a>
+        <a href="#about" class="font-body text-sm text-text-muted-dark px-sm min-h-[48px] flex items-center relative transition-colors duration-200 hover:text-accent">About</a>
+        <a href="#contact" class="font-body text-sm text-text-muted-dark px-sm min-h-[48px] flex items-center relative transition-colors duration-200 hover:text-accent">Contact</a>
       </div>
-      <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
+      <button class="hamburger md:hidden flex flex-col justify-center gap-[5px] w-12 h-12 p-3" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span class="block w-full h-0.5 bg-text-dark-bg rounded-sm"></span>
+        <span class="block w-full h-0.5 bg-text-dark-bg rounded-sm"></span>
+        <span class="block w-full h-0.5 bg-text-dark-bg rounded-sm"></span>
       </button>
     </nav>
   </header>
 
   <!-- Mobile Nav Overlay -->
-
-  <div class="mobile-nav-overlay" id="mobile-nav" role="dialog" aria-label="Navigation menu" aria-hidden="true">
-    <button class="mobile-nav-close" aria-label="Close navigation menu">&times;</button>
+  <div class="mobile-nav-overlay fixed inset-0 z-[200] bg-dark-base flex flex-col items-center justify-center opacity-0 invisible transition-all duration-300" id="mobile-nav" role="dialog" aria-label="Navigation menu" aria-hidden="true">
+    <button class="mobile-nav-close absolute top-sm right-sm text-[32px] text-text-dark-bg w-12 h-12 flex items-center justify-center" aria-label="Close navigation menu">&times;</button>
     <nav>
-      <ul class="mobile-nav-links" role="list">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#journey">Journey</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+      <ul class="mobile-nav-links flex flex-col items-center gap-lg" role="list">
+        <li><a href="#work" class="font-heading text-2xl text-text-dark-bg p-sm min-h-[48px] flex items-center transition-colors duration-200 hover:text-accent">Work</a></li>
+        <li><a href="#journey" class="font-heading text-2xl text-text-dark-bg p-sm min-h-[48px] flex items-center transition-colors duration-200 hover:text-accent">Journey</a></li>
+        <li><a href="#about" class="font-heading text-2xl text-text-dark-bg p-sm min-h-[48px] flex items-center transition-colors duration-200 hover:text-accent">About</a></li>
+        <li><a href="#contact" class="font-heading text-2xl text-text-dark-bg p-sm min-h-[48px] flex items-center transition-colors duration-200 hover:text-accent">Contact</a></li>
       </ul>
     </nav>
   </div>
@@ -61,186 +98,186 @@
   <main>
 
     <!-- Section 1: Hero -->
-    <section class="hero" id="hero">
-      <div class="hero-content">
-        <div class="hero-text">
-          <p class="hero-name">Max Gregori</p>
-          <h1 class="hero-headline">I Build Systems That Solve Problems Others Work Around</h1>
-          <p class="hero-subheadline">I find where processes break down, build what fixes them, and scale the solution.</p>
-          <div class="hero-actions">
-            <a href="#work" class="btn-primary">See My Work</a>
-            <a href="#contact" class="btn-secondary">Get in Touch</a>
+    <section class="hero relative min-h-screen min-h-dvh bg-dark-base flex flex-col overflow-hidden" id="hero">
+      <div class="flex-1 flex flex-col justify-center px-md pt-xl pb-lg md:flex-row md:items-center md:gap-xl md:py-2xl lg:py-3xl max-w-[1200px] mx-auto w-full relative z-[1]">
+        <div class="flex flex-col gap-sm md:flex-1">
+          <p class="hero-name font-heading font-semibold text-sm uppercase tracking-[2px] text-accent">Max Gregori</p>
+          <h1 class="hero-headline font-heading font-bold text-4xl leading-[1.2] text-text-dark-bg md:text-5xl lg:text-6xl lg:font-light">I Build Systems That Solve Problems Others Work Around</h1>
+          <p class="hero-subheadline font-body text-base leading-relaxed text-text-muted-dark max-w-[520px] md:text-lg">I find where processes break down, build what fixes them, and scale the solution.</p>
+          <div class="hero-actions flex flex-col items-start gap-sm mt-xs md:flex-row md:items-center md:gap-md">
+            <a href="#work" class="btn-primary inline-block font-heading font-semibold text-base bg-accent text-dark-base px-lg py-[14px] rounded-lg min-h-[48px] text-center relative overflow-hidden z-[1] transition-transform duration-200 hover:-translate-y-px active:translate-y-0">See My Work</a>
+            <a href="#contact" class="inline-block font-heading font-semibold text-base text-text-dark-bg bg-transparent border border-text-muted-dark px-lg py-[14px] rounded-lg min-h-[48px] text-center transition-colors duration-200 hover:border-accent hover:text-accent">Get in Touch</a>
           </div>
         </div>
-        <div class="hero-photo">
-          <img src="images/headshot.webp" alt="Max Gregori" class="hero-headshot" loading="lazy">
+        <div class="hidden md:block md:flex-[0_0_40%] md:max-w-[400px]">
+          <img src="images/headshot.webp" alt="Max Gregori" class="w-full h-full object-cover rounded-2xl bg-[#1E293B]" loading="lazy">
         </div>
       </div>
     </section>
 
     <!-- Section 2: Featured Projects -->
-    <section class="projects" id="work">
-      <div class="section-container">
-        <h2 class="section-label">What I Build</h2>
-        <p class="section-intro">The best way to understand what's possible is to build it. Every project here started with a real problem, and my answer was always the same: go build the thing and find out.</p>
+    <section class="projects bg-light-base mt-[-40px] pt-[calc(80px+40px)] pb-[calc(80px+60px)] lg:pt-[calc(96px+40px)] lg:pb-[calc(96px+80px)]" id="work">
+      <div class="w-full max-w-[1200px] mx-auto px-md">
+        <h2 class="section-label font-body font-semibold text-sm uppercase tracking-[1.5px] text-accent-on-light mb-md md:text-center md:text-[15px]">What I Build</h2>
+        <p class="section-intro font-heading font-light text-2xl leading-normal text-text-light-bg mb-xl max-w-[800px] md:text-[28px] md:text-center md:mx-auto lg:text-[32px]">The best way to understand what's possible is to build it. Every project here started with a real problem, and my answer was always the same: go build the thing and find out.</p>
 
-        <div class="project-cards">
+        <div class="flex flex-col gap-md md:gap-lg md:max-w-[960px] md:mx-auto">
 
           <!-- Project 1 -->
-          <article class="project-card">
-            <span class="project-number" aria-hidden="true">01</span>
-            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Building a Healthcare IT Service Line from Zero">
-              <div class="card-collapsed">
-                <p class="card-question">What happens when a business needs something that doesn't exist?</p>
-                <h3 class="card-title">Building a Healthcare IT Service Line from Zero</h3>
-                <p class="card-summary">Physicians don't want to troubleshoot their own IT. They want someone on site who handles it, so they can focus on patients. That service didn't exist at Integrity HIT when I joined, so I built it. It became the company's largest revenue line.</p>
-                <div class="metric-pills">
-                  <span class="metric-pill">#1 revenue line at Integrity HIT</span>
+          <article class="project-card relative overflow-hidden bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-all duration-300 md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(20,138,126,0.08),0_4px_12px_rgba(0,0,0,0.06)]">
+            <span class="project-number absolute -top-[10px] right-4 font-heading text-[72px] font-bold text-accent-on-light opacity-[0.03] leading-none pointer-events-none select-none transition-all duration-300" aria-hidden="true">01</span>
+            <button class="card-toggle block w-full text-left p-md cursor-pointer min-h-[48px] md:p-lg" aria-expanded="false" aria-label="Expand project: Building a Healthcare IT Service Line from Zero">
+              <div class="flex flex-col gap-3">
+                <p class="font-heading font-light italic text-sm text-text-muted-light">What happens when a business needs something that doesn't exist?</p>
+                <h3 class="font-heading font-semibold text-xl leading-tight text-text-light-bg mb-1 md:text-2xl">Building a Healthcare IT Service Line from Zero</h3>
+                <p class="font-body text-base leading-relaxed text-text-body-muted mb-1">Physicians don't want to troubleshoot their own IT. They want someone on site who handles it, so they can focus on patients. That service didn't exist at Integrity HIT when I joined, so I built it. It became the company's largest revenue line.</p>
+                <div class="flex flex-wrap gap-2 mt-1">
+                  <span class="inline-block font-body text-[13px] font-medium text-accent-on-light bg-[rgba(20,138,126,0.08)] border border-[rgba(20,138,126,0.2)] rounded-md px-[10px] py-1 leading-snug">#1 revenue line at Integrity HIT</span>
                 </div>
-                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+                <span class="inline-flex items-center gap-1.5 font-body text-sm text-accent-on-light mt-xs">Read the full story <span class="chevron inline-block transition-transform duration-300 text-sm" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
             <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
-              <div class="case-study">
-                <p class="case-label">The problem</p>
-                <p>Outpatient surgery centers had a consistent, unaddressed need. Physicians don't want to deal with broken hardware, network outages, or software lockouts. They want IT to work, and when it doesn't, they want someone physically there to fix it. When I joined Integrity HIT as Director of Business Development, the company was an IT staffing agency with no on-site capability. The opportunity was clear.</p>
-                <p class="case-label">What I built</p>
-                <p>A full IT field services practice built around putting skilled technicians on site so physicians never have to think about IT. Network closet construction, Cisco rack-and-stack, structured cabling, fiber runs, server configuration. The scope covered the full facility lifecycle, from de novo buildouts through ongoing managed services.</p>
-                <p class="case-label">The outcome</p>
-                <p>It grew into Integrity's largest revenue-generating service line, with over 100 onsite projects executed in the first year.</p>
+              <div class="px-md pb-md border-t border-black/[0.06] md:px-lg md:pb-lg">
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The problem</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">Outpatient surgery centers had a consistent, unaddressed need. Physicians don't want to deal with broken hardware, network outages, or software lockouts. They want IT to work, and when it doesn't, they want someone physically there to fix it. When I joined Integrity HIT as Director of Business Development, the company was an IT staffing agency with no on-site capability. The opportunity was clear.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">What I built</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">A full IT field services practice built around putting skilled technicians on site so physicians never have to think about IT. Network closet construction, Cisco rack-and-stack, structured cabling, fiber runs, server configuration. The scope covered the full facility lifecycle, from de novo buildouts through ongoing managed services.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The outcome</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">It grew into Integrity's largest revenue-generating service line, with over 100 onsite projects executed in the first year.</p>
               </div>
             </div>
           </article>
 
           <!-- Project 2 -->
-          <article class="project-card">
-            <span class="project-number" aria-hidden="true">02</span>
-            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Automating the Operations I Built">
-              <div class="card-collapsed">
-                <p class="card-question">What happens when that business outgrows its own operations?</p>
-                <h3 class="card-title">Automating the Operations I Built</h3>
-                <p class="card-summary">The field services practice grew fast enough that the coordination behind it couldn't keep up. Onboarding, scheduling, and invoicing were all bottlenecked. I built an AI agent to automate that operational layer so the team could stay focused on the actual work.</p>
-                <div class="metric-pills">
-                  <span class="metric-pill">70%+ efficiency gain</span>
-                  <span class="metric-pill">30%+ pipeline growth</span>
-                  <span class="metric-pill">n8n · Jobber · OpenAI API</span>
+          <article class="project-card relative overflow-hidden bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-all duration-300 md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(20,138,126,0.08),0_4px_12px_rgba(0,0,0,0.06)]">
+            <span class="project-number absolute -top-[10px] right-4 font-heading text-[72px] font-bold text-accent-on-light opacity-[0.03] leading-none pointer-events-none select-none transition-all duration-300" aria-hidden="true">02</span>
+            <button class="card-toggle block w-full text-left p-md cursor-pointer min-h-[48px] md:p-lg" aria-expanded="false" aria-label="Expand project: Automating the Operations I Built">
+              <div class="flex flex-col gap-3">
+                <p class="font-heading font-light italic text-sm text-text-muted-light">What happens when that business outgrows its own operations?</p>
+                <h3 class="font-heading font-semibold text-xl leading-tight text-text-light-bg mb-1 md:text-2xl">Automating the Operations I Built</h3>
+                <p class="font-body text-base leading-relaxed text-text-body-muted mb-1">The field services practice grew fast enough that the coordination behind it couldn't keep up. Onboarding, scheduling, and invoicing were all bottlenecked. I built an AI agent to automate that operational layer so the team could stay focused on the actual work.</p>
+                <div class="flex flex-wrap gap-2 mt-1">
+                  <span class="inline-block font-body text-[13px] font-medium text-accent-on-light bg-[rgba(20,138,126,0.08)] border border-[rgba(20,138,126,0.2)] rounded-md px-[10px] py-1 leading-snug">70%+ efficiency gain</span>
+                  <span class="inline-block font-body text-[13px] font-medium text-accent-on-light bg-[rgba(20,138,126,0.08)] border border-[rgba(20,138,126,0.2)] rounded-md px-[10px] py-1 leading-snug">30%+ pipeline growth</span>
+                  <span class="inline-block font-body text-[13px] font-medium text-accent-on-light bg-[rgba(20,138,126,0.08)] border border-[rgba(20,138,126,0.2)] rounded-md px-[10px] py-1 leading-snug">n8n · Jobber · OpenAI API</span>
                 </div>
-                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+                <span class="inline-flex items-center gap-1.5 font-body text-sm text-accent-on-light mt-xs">Read the full story <span class="chevron inline-block transition-transform duration-300 text-sm" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
             <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
-              <div class="case-study">
-                <p class="case-label">The problem</p>
-                <p>The field services practice was growing, and that growth created a new problem. Too many clients onboarding at the same time, too many jobs competing for the same technicians, and no clean way to see who was available when. The service itself was solid. The coordination behind it wasn't keeping pace, and that was starting to affect quality.</p>
-                <p class="case-label">What I built</p>
-                <p>An AI agent using n8n for workflow orchestration, Jobber for field service management, and the OpenAI API for intelligent routing. It handles client intake, job scheduling, and invoicing across the field services operation. It matches technicians to jobs based on availability, triggers invoices on completion, and keeps the pipeline organized without someone manually tracking every moving piece.</p>
-                <p class="case-label">The outcome</p>
-                <p>Operational efficiency went up by over 70%, and the job pipeline grew by over 30%. The bigger win was that the team stopped spending time on logistics and went back to spending it on the work itself.</p>
+              <div class="px-md pb-md border-t border-black/[0.06] md:px-lg md:pb-lg">
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The problem</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">The field services practice was growing, and that growth created a new problem. Too many clients onboarding at the same time, too many jobs competing for the same technicians, and no clean way to see who was available when. The service itself was solid. The coordination behind it wasn't keeping pace, and that was starting to affect quality.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">What I built</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">An AI agent using n8n for workflow orchestration, Jobber for field service management, and the OpenAI API for intelligent routing. It handles client intake, job scheduling, and invoicing across the field services operation. It matches technicians to jobs based on availability, triggers invoices on completion, and keeps the pipeline organized without someone manually tracking every moving piece.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The outcome</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">Operational efficiency went up by over 70%, and the job pipeline grew by over 30%. The bigger win was that the team stopped spending time on logistics and went back to spending it on the work itself.</p>
               </div>
             </div>
           </article>
 
           <!-- Project 3 -->
-          <article class="project-card">
-            <span class="project-number" aria-hidden="true">03</span>
-            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Replacing Scattered Workflows with an AI-Powered Web App">
-              <div class="card-collapsed">
-                <p class="card-question">What happens when an entire team is drowning in spreadsheets?</p>
-                <h3 class="card-title">Replacing Scattered Workflows with an AI-Powered Web App</h3>
-                <p class="card-summary">A healthcare software company expanding fast across the US market had its implementation tracking split between Excel files, OneDrive folders, email threads, and PowerPoint decks. I built a web application that brought all of it into one place, with AI-assisted coordination built in.</p>
-                <div class="metric-pills">
-                  <span class="metric-pill">20%+ implementation efficiency gain</span>
-                  <span class="metric-pill">Active Constance IT engagement</span>
+          <article class="project-card relative overflow-hidden bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-all duration-300 md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(20,138,126,0.08),0_4px_12px_rgba(0,0,0,0.06)]">
+            <span class="project-number absolute -top-[10px] right-4 font-heading text-[72px] font-bold text-accent-on-light opacity-[0.03] leading-none pointer-events-none select-none transition-all duration-300" aria-hidden="true">03</span>
+            <button class="card-toggle block w-full text-left p-md cursor-pointer min-h-[48px] md:p-lg" aria-expanded="false" aria-label="Expand project: Replacing Scattered Workflows with an AI-Powered Web App">
+              <div class="flex flex-col gap-3">
+                <p class="font-heading font-light italic text-sm text-text-muted-light">What happens when an entire team is drowning in spreadsheets?</p>
+                <h3 class="font-heading font-semibold text-xl leading-tight text-text-light-bg mb-1 md:text-2xl">Replacing Scattered Workflows with an AI-Powered Web App</h3>
+                <p class="font-body text-base leading-relaxed text-text-body-muted mb-1">A healthcare software company expanding fast across the US market had its implementation tracking split between Excel files, OneDrive folders, email threads, and PowerPoint decks. I built a web application that brought all of it into one place, with AI-assisted coordination built in.</p>
+                <div class="flex flex-wrap gap-2 mt-1">
+                  <span class="inline-block font-body text-[13px] font-medium text-accent-on-light bg-[rgba(20,138,126,0.08)] border border-[rgba(20,138,126,0.2)] rounded-md px-[10px] py-1 leading-snug">20%+ implementation efficiency gain</span>
+                  <span class="inline-block font-body text-[13px] font-medium text-accent-on-light bg-[rgba(20,138,126,0.08)] border border-[rgba(20,138,126,0.2)] rounded-md px-[10px] py-1 leading-snug">Active Constance IT engagement</span>
                 </div>
-                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+                <span class="inline-flex items-center gap-1.5 font-body text-sm text-accent-on-light mt-xs">Read the full story <span class="chevron inline-block transition-transform duration-300 text-sm" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
             <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
-              <div class="case-study">
-                <p class="case-label">The problem</p>
-                <p>MediReport is a European cardiovascular information system that I helped bring into the American healthcare market. As they started implementing across outpatient OBLs, ASCs, and clinics doing cardiovascular procedures, the project management side couldn't keep up. Tracking was spread across Excel spreadsheets, multiple OneDrive instances, email chains, and weekly PowerPoint status decks. Different people were updating different files. Version conflicts were constant. There was no single source of truth, and bottlenecks were showing up at every stage.</p>
-                <p class="case-label">What I built</p>
-                <p>A React + Firebase web application that replaced all of those disconnected systems with one tool. It includes customizable implementation plans per site, role-based access for internal teams and customers, and an AI assistant that lets project managers log updates in plain English. Someone can say "I had a call with this vendor, there's going to be a delay interfacing these modalities," and the AI routes the information to the right fields, flags whether the task needs clinical or engineering involvement, tracks deadlines, and sends reminders.</p>
-                <p class="case-label">The outcome</p>
-                <p>Implementation efficiency improved by over 20%. That might sound modest, but these implementations typically take 8 to 16 weeks. Shaving 20% off a three- or four-month rollout means weeks of time recovered per site. The MediReport team now runs all of its US implementations through this single platform, and it's an active Constance IT engagement.</p>
+              <div class="px-md pb-md border-t border-black/[0.06] md:px-lg md:pb-lg">
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The problem</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">MediReport is a European cardiovascular information system that I helped bring into the American healthcare market. As they started implementing across outpatient OBLs, ASCs, and clinics doing cardiovascular procedures, the project management side couldn't keep up. Tracking was spread across Excel spreadsheets, multiple OneDrive instances, email chains, and weekly PowerPoint status decks. Different people were updating different files. Version conflicts were constant. There was no single source of truth, and bottlenecks were showing up at every stage.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">What I built</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">A React + Firebase web application that replaced all of those disconnected systems with one tool. It includes customizable implementation plans per site, role-based access for internal teams and customers, and an AI assistant that lets project managers log updates in plain English. Someone can say "I had a call with this vendor, there's going to be a delay interfacing these modalities," and the AI routes the information to the right fields, flags whether the task needs clinical or engineering involvement, tracks deadlines, and sends reminders.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The outcome</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">Implementation efficiency improved by over 20%. That might sound modest, but these implementations typically take 8 to 16 weeks. Shaving 20% off a three- or four-month rollout means weeks of time recovered per site. The MediReport team now runs all of its US implementations through this single platform, and it's an active Constance IT engagement.</p>
               </div>
             </div>
           </article>
 
           <!-- Project 4 -->
-          <article class="project-card">
-            <span class="project-number" aria-hidden="true">04</span>
-            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Automating a Full Creative Pipeline End-to-End">
-              <div class="card-collapsed">
-                <p class="card-question">When I want to understand something, I build it.</p>
-                <h3 class="card-title">Automating a Full Creative Pipeline End-to-End</h3>
-                <p class="card-summary">AI-generated content was everywhere, and I wanted to know what it actually takes to go from a one-line idea to a publish-ready video. So I built the full pipeline: script, voiceover, generated scenes, synced captions, published.</p>
-                <div class="metric-pills">
-                  <span class="metric-pill">n8n · Claude API · ElevenLabs · Veo 3.1 · Kling 3.0 · Creatomate · Blotato</span>
+          <article class="project-card relative overflow-hidden bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-all duration-300 md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(20,138,126,0.08),0_4px_12px_rgba(0,0,0,0.06)]">
+            <span class="project-number absolute -top-[10px] right-4 font-heading text-[72px] font-bold text-accent-on-light opacity-[0.03] leading-none pointer-events-none select-none transition-all duration-300" aria-hidden="true">04</span>
+            <button class="card-toggle block w-full text-left p-md cursor-pointer min-h-[48px] md:p-lg" aria-expanded="false" aria-label="Expand project: Automating a Full Creative Pipeline End-to-End">
+              <div class="flex flex-col gap-3">
+                <p class="font-heading font-light italic text-sm text-text-muted-light">When I want to understand something, I build it.</p>
+                <h3 class="font-heading font-semibold text-xl leading-tight text-text-light-bg mb-1 md:text-2xl">Automating a Full Creative Pipeline End-to-End</h3>
+                <p class="font-body text-base leading-relaxed text-text-body-muted mb-1">AI-generated content was everywhere, and I wanted to know what it actually takes to go from a one-line idea to a publish-ready video. So I built the full pipeline: script, voiceover, generated scenes, synced captions, published.</p>
+                <div class="flex flex-wrap gap-2 mt-1">
+                  <span class="inline-block font-body text-[13px] font-medium text-accent-on-light bg-[rgba(20,138,126,0.08)] border border-[rgba(20,138,126,0.2)] rounded-md px-[10px] py-1 leading-snug">n8n · Claude API · ElevenLabs · Veo 3.1 · Kling 3.0 · Creatomate · Blotato</span>
                 </div>
-                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+                <span class="inline-flex items-center gap-1.5 font-body text-sm text-accent-on-light mt-xs">Read the full story <span class="chevron inline-block transition-transform duration-300 text-sm" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
             <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
-              <div class="case-study">
-                <p class="case-label">The problem</p>
-                <p>AI-generated content was taking off, and most of the conversation around it felt like hype. My girlfriend runs a wellness brand with regular sponsorship offers, so I had a real use case ready. But before building anything for her, I wanted to understand every step of the pipeline myself.</p>
-                <p class="case-label">What I built</p>
-                <p>The full pipeline from scratch, starting with automated YouTube content as my test case. You give it a one-line premise, and the system generates a scene-by-scene script, produces voiceover narration per scene, generates AI-animated video clips, and assembles everything into a finished video with word-synced captions, ready to publish. I built it on n8n for workflow orchestration, Claude API for script generation, ElevenLabs for voice synthesis, Veo 3.1 and Kling 3.0 for video generation, Creatomate for final assembly, and Blotato for multi-platform publishing.</p>
-                <p class="case-label">The outcome</p>
-                <p>Once I understood every step, I adapted the pipeline for my girlfriend's brand. She's now producing and publishing AI-generated UGC at a pace that wasn't realistic before. For me, the value was less about the pipeline itself and more about developing a clear picture of what AI content creation can actually do and where it falls short.</p>
+              <div class="px-md pb-md border-t border-black/[0.06] md:px-lg md:pb-lg">
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The problem</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">AI-generated content was taking off, and most of the conversation around it felt like hype. My girlfriend runs a wellness brand with regular sponsorship offers, so I had a real use case ready. But before building anything for her, I wanted to understand every step of the pipeline myself.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">What I built</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">The full pipeline from scratch, starting with automated YouTube content as my test case. You give it a one-line premise, and the system generates a scene-by-scene script, produces voiceover narration per scene, generates AI-animated video clips, and assembles everything into a finished video with word-synced captions, ready to publish. I built it on n8n for workflow orchestration, Claude API for script generation, ElevenLabs for voice synthesis, Veo 3.1 and Kling 3.0 for video generation, Creatomate for final assembly, and Blotato for multi-platform publishing.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The outcome</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">Once I understood every step, I adapted the pipeline for my girlfriend's brand. She's now producing and publishing AI-generated UGC at a pace that wasn't realistic before. For me, the value was less about the pipeline itself and more about developing a clear picture of what AI content creation can actually do and where it falls short.</p>
               </div>
             </div>
           </article>
 
           <!-- Project 5 -->
-          <article class="project-card">
-            <span class="project-number" aria-hidden="true">05</span>
-            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: An Autonomous Trading System Built from First Principles">
-              <div class="card-collapsed">
-                <p class="card-question">When I want to understand something, I build it.</p>
-                <h3 class="card-title">An Autonomous Trading System Built from First Principles</h3>
-                <p class="card-summary">Prediction market bots were supposedly easy money. That didn't add up to me. I wanted to find out what it actually takes, starting from how weather data is measured, where it's hosted, and how to price temperature markets with real statistical models.</p>
-                <div class="metric-pills">
-                  <span class="metric-pill">Python · NumPy · AWS · 200+ markets daily · 20 US cities</span>
+          <article class="project-card relative overflow-hidden bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-all duration-300 md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(20,138,126,0.08),0_4px_12px_rgba(0,0,0,0.06)]">
+            <span class="project-number absolute -top-[10px] right-4 font-heading text-[72px] font-bold text-accent-on-light opacity-[0.03] leading-none pointer-events-none select-none transition-all duration-300" aria-hidden="true">05</span>
+            <button class="card-toggle block w-full text-left p-md cursor-pointer min-h-[48px] md:p-lg" aria-expanded="false" aria-label="Expand project: An Autonomous Trading System Built from First Principles">
+              <div class="flex flex-col gap-3">
+                <p class="font-heading font-light italic text-sm text-text-muted-light">When I want to understand something, I build it.</p>
+                <h3 class="font-heading font-semibold text-xl leading-tight text-text-light-bg mb-1 md:text-2xl">An Autonomous Trading System Built from First Principles</h3>
+                <p class="font-body text-base leading-relaxed text-text-body-muted mb-1">Prediction market bots were supposedly easy money. That didn't add up to me. I wanted to find out what it actually takes, starting from how weather data is measured, where it's hosted, and how to price temperature markets with real statistical models.</p>
+                <div class="flex flex-wrap gap-2 mt-1">
+                  <span class="inline-block font-body text-[13px] font-medium text-accent-on-light bg-[rgba(20,138,126,0.08)] border border-[rgba(20,138,126,0.2)] rounded-md px-[10px] py-1 leading-snug">Python · NumPy · AWS · 200+ markets daily · 20 US cities</span>
                 </div>
-                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+                <span class="inline-flex items-center gap-1.5 font-body text-sm text-accent-on-light mt-xs">Read the full story <span class="chevron inline-block transition-transform duration-300 text-sm" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
             <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
-              <div class="case-study">
-                <p class="case-label">The problem</p>
-                <p>Prediction markets were taking off and people were claiming you could set up a trading bot overnight. I wanted to find out for myself what it actually takes to build one of these and whether there's a real edge behind the noise.</p>
-                <p class="case-label">What I built</p>
-                <p>I started from first principles. I researched how weather data is measured, where weather stations source their information, and how the data gets produced and hosted. I selected an AWS data center co-located in the same cluster as NOAA's weather data to minimize latency. Then I built the trading system in Python, using NumPy for the statistical modeling: it ingests real-time NWP ensemble forecast data from NOAA, constructs empirical probability distributions with station-level bias correction, and executes trades on prediction exchanges with built-in risk controls like exposure ramps, drawdown circuit breakers, and per-market caps. It runs autonomously on AWS EC2, processing over 200 markets per cycle across 20 US cities, and sends me automated performance reports.</p>
-                <p class="case-label">The outcome</p>
-                <p>The system is fully operational. More useful to me, though, is the understanding I built along the way. The data engineering, the statistical modeling, the infrastructure decisions. The gap between the hype and the reality is significant, and the only way I could have known that was by building the thing.</p>
+              <div class="px-md pb-md border-t border-black/[0.06] md:px-lg md:pb-lg">
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The problem</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">Prediction markets were taking off and people were claiming you could set up a trading bot overnight. I wanted to find out for myself what it actually takes to build one of these and whether there's a real edge behind the noise.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">What I built</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">I started from first principles. I researched how weather data is measured, where weather stations source their information, and how the data gets produced and hosted. I selected an AWS data center co-located in the same cluster as NOAA's weather data to minimize latency. Then I built the trading system in Python, using NumPy for the statistical modeling: it ingests real-time NWP ensemble forecast data from NOAA, constructs empirical probability distributions with station-level bias correction, and executes trades on prediction exchanges with built-in risk controls like exposure ramps, drawdown circuit breakers, and per-market caps. It runs autonomously on AWS EC2, processing over 200 markets per cycle across 20 US cities, and sends me automated performance reports.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The outcome</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">The system is fully operational. More useful to me, though, is the understanding I built along the way. The data engineering, the statistical modeling, the infrastructure decisions. The gap between the hype and the reality is significant, and the only way I could have known that was by building the thing.</p>
               </div>
             </div>
           </article>
 
           <!-- Project 6 -->
-          <article class="project-card">
-            <span class="project-number" aria-hidden="true">06</span>
-            <button class="card-toggle" aria-expanded="false" aria-label="Expand project: Bella: an AI Recipe App, from Concept to App Store">
-              <div class="card-collapsed">
-                <p class="card-question">When the people I care about have a problem, I build the fix.</p>
-                <h3 class="card-title">Bella: an AI Recipe App, from Concept to App Store</h3>
-                <p class="card-summary">My girlfriend and my mom both love cooking, but their recipes were scattered across paper, social media, notes apps, and cookbooks. I'd never built an iOS app before, so I built Bella — an AI-powered recipe manager that went from concept to the App Store.</p>
-                <div class="metric-pills">
-                  <span class="metric-pill">Swift · SwiftUI · OpenAI API · Concept to App Store</span>
+          <article class="project-card relative overflow-hidden bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-all duration-300 md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(20,138,126,0.08),0_4px_12px_rgba(0,0,0,0.06)]">
+            <span class="project-number absolute -top-[10px] right-4 font-heading text-[72px] font-bold text-accent-on-light opacity-[0.03] leading-none pointer-events-none select-none transition-all duration-300" aria-hidden="true">06</span>
+            <button class="card-toggle block w-full text-left p-md cursor-pointer min-h-[48px] md:p-lg" aria-expanded="false" aria-label="Expand project: Bella: an AI Recipe App, from Concept to App Store">
+              <div class="flex flex-col gap-3">
+                <p class="font-heading font-light italic text-sm text-text-muted-light">When the people I care about have a problem, I build the fix.</p>
+                <h3 class="font-heading font-semibold text-xl leading-tight text-text-light-bg mb-1 md:text-2xl">Bella: an AI Recipe App, from Concept to App Store</h3>
+                <p class="font-body text-base leading-relaxed text-text-body-muted mb-1">My girlfriend and my mom both love cooking, but their recipes were scattered across paper, social media, notes apps, and cookbooks. I'd never built an iOS app before, so I built Bella — an AI-powered recipe manager that went from concept to the App Store.</p>
+                <div class="flex flex-wrap gap-2 mt-1">
+                  <span class="inline-block font-body text-[13px] font-medium text-accent-on-light bg-[rgba(20,138,126,0.08)] border border-[rgba(20,138,126,0.2)] rounded-md px-[10px] py-1 leading-snug">Swift · SwiftUI · OpenAI API · Concept to App Store</span>
                 </div>
-                <span class="card-expand-hint">Read the full story <span class="chevron" aria-hidden="true">&#8595;</span></span>
+                <span class="inline-flex items-center gap-1.5 font-body text-sm text-accent-on-light mt-xs">Read the full story <span class="chevron inline-block transition-transform duration-300 text-sm" aria-hidden="true">&#8595;</span></span>
               </div>
             </button>
             <div class="card-expanded" aria-hidden="true" style="height: 0; overflow: hidden;">
-              <div class="case-study">
-                <p class="case-label">The problem</p>
-                <p>The two people in my life who cook the most had recipes saved in a dozen different places. Handwritten notes, Instagram saves, screenshots, bookmarked websites, physical cookbooks. They could never find what they needed when they needed it.</p>
-                <p class="case-label">What I built</p>
-                <p>Bella, an AI-powered recipe manager for iOS, built in Swift and SwiftUI. You can import a recipe from anywhere: take a photo of a handwritten card, paste a web link, upload a screenshot. The app uses the OpenAI API to interpret handwritten notes via image recognition, and to extract structured recipe data from web pages while stripping out ads, navigation, and filler content. Everything gets formatted cleanly and saved to your account. I'd never done iOS development before this project. I took it from concept to App Store launch on my own.</p>
-                <p class="case-label">The outcome</p>
-                <p>It's live on the App Store and used by my girlfriend, my mom, their family, and friends. It's the simplest project here, but it might be the most telling. I saw a problem, learned a new platform, and shipped a real product.</p>
+              <div class="px-md pb-md border-t border-black/[0.06] md:px-lg md:pb-lg">
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The problem</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">The two people in my life who cook the most had recipes saved in a dozen different places. Handwritten notes, Instagram saves, screenshots, bookmarked websites, physical cookbooks. They could never find what they needed when they needed it.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">What I built</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">Bella, an AI-powered recipe manager for iOS, built in Swift and SwiftUI. You can import a recipe from anywhere: take a photo of a handwritten card, paste a web link, upload a screenshot. The app uses the OpenAI API to interpret handwritten notes via image recognition, and to extract structured recipe data from web pages while stripping out ads, navigation, and filler content. Everything gets formatted cleanly and saved to your account. I'd never done iOS development before this project. I took it from concept to App Store launch on my own.</p>
+                <p class="font-body font-semibold text-xs uppercase tracking-[2px] text-accent-on-light mt-md mb-xs">The outcome</p>
+                <p class="font-body text-base leading-[1.7] text-text-body-muted">It's live on the App Store and used by my girlfriend, my mom, their family, and friends. It's the simplest project here, but it might be the most telling. I saw a problem, learned a new platform, and shipped a real product.</p>
               </div>
             </div>
           </article>
@@ -250,16 +287,16 @@
     </section>
 
     <!-- Section 3: Journey -->
-    <section class="journey" id="journey">
-      <div class="section-container">
-        <h2 class="section-label section-label--dark">The Journey</h2>
-        <p class="section-intro section-intro--dark">Three continents, eight cities, and the adaptability that comes from starting over more times than most.</p>
+    <section class="journey bg-gradient-to-b from-dark-base via-[#111C32] to-dark-base mt-[-40px] pt-[calc(80px+80px)] pb-[calc(80px+40px)]" id="journey">
+      <div class="w-full max-w-[1400px] mx-auto px-md">
+        <h2 class="section-label font-body font-semibold text-sm uppercase tracking-[1.5px] text-accent mb-md md:text-center md:text-[15px]">The Journey</h2>
+        <p class="section-intro font-heading font-light text-2xl leading-normal text-text-dark-bg mb-xl max-w-[800px] md:text-[28px] md:text-center md:mx-auto lg:text-[32px]">Three continents, eight cities, and the adaptability that comes from starting over more times than most.</p>
 
-        <div class="journey-map-wrapper">
-          <div class="journey-map" aria-label="Interactive map showing Max's journey across three continents">
-            <div class="journey-map-loading"><p>Loading map...</p></div>
+        <div class="journey-map-wrapper hidden md:flex md:items-start md:gap-8 md:w-full">
+          <div class="journey-map md:flex-[1_1_60%] md:min-h-[600px] md:relative" aria-label="Interactive map showing Max's journey across three continents">
+            <div class="journey-map-loading flex items-center justify-center min-h-[400px] text-text-muted-dark font-body text-sm"><p>Loading map...</p></div>
           </div>
-          <div class="journey-sidebar" aria-label="Journey timeline">
+          <div class="journey-sidebar md:flex-[0_0_280px] md:flex md:flex-col md:gap-0 md:pt-5" aria-label="Journey timeline">
             <!-- Generated by JS from journeyStops data -->
           </div>
         </div>
@@ -345,62 +382,62 @@
     </section>
 
     <!-- Section 4: About -->
-    <section class="about" id="about">
-      <div class="section-container">
-        <h2 class="section-label">About Me</h2>
-        <div class="about-content">
-          <div class="about-photo">
-            <img src="images/headshot-about.webp" alt="Max Gregori" class="about-headshot" loading="lazy">
+    <section class="about bg-white mt-[-40px] pt-[calc(80px+40px)] pb-3xl lg:pt-[calc(96px+40px)] lg:pb-4xl" id="about">
+      <div class="w-full max-w-[1200px] mx-auto px-md">
+        <h2 class="section-label font-body font-semibold text-sm uppercase tracking-[1.5px] text-accent-on-light mb-md md:text-center md:text-[15px]">About Me</h2>
+        <div class="flex flex-col gap-lg md:flex-row md:items-stretch md:gap-xl">
+          <div class="w-full max-w-[320px] md:flex-[0_0_40%] md:max-w-[360px]">
+            <img src="images/headshot-about.webp" alt="Max Gregori" class="w-full aspect-[3/4] object-cover rounded-xl bg-[#1E293B] md:aspect-auto md:h-full" loading="lazy">
           </div>
-          <div class="about-text">
-            <p>A friend and I were in high school when we noticed that most web design agencies wouldn't take on charities or small nonprofits. The budgets were too small, the projects too simple. So these organizations just went without, or scraped by with whatever they could manage on their own. We didn't have much overhead. We were teenagers. So we started building affordable websites for them around New York City. It wasn't a grand plan, but it was the first time I looked at a problem everyone else seemed to accept and thought, "We could actually fix this."</p>
-            <p>That instinct kept showing up. Growth roles at startups, two summers in investment banking, a deep dive into healthcare IT where I managed large-scale projects and built service lines from scratch. The problems that pulled me in were never technical to begin with. They were operational gaps with technical solutions. What a business needed versus what it actually had the infrastructure to do. Today I run Constance IT, building AI-powered workflow automation and managed IT services for small and medium-sized businesses. Enterprises have consultancies and custom AI tools for this. Most SMBs don't, and that's where Constance IT comes in.</p>
-            <p>When I'm not building, I'm watching Formula One. I picked that up around four years old, watching races in my grandparents' basement in Germany. Some things stay with you, no matter how often you move.</p>
+          <div class="flex flex-col gap-sm md:flex-1">
+            <p class="font-body text-base leading-[1.7] text-text-light-bg md:text-lg">A friend and I were in high school when we noticed that most web design agencies wouldn't take on charities or small nonprofits. The budgets were too small, the projects too simple. So these organizations just went without, or scraped by with whatever they could manage on their own. We didn't have much overhead. We were teenagers. So we started building affordable websites for them around New York City. It wasn't a grand plan, but it was the first time I looked at a problem everyone else seemed to accept and thought, "We could actually fix this."</p>
+            <p class="font-body text-base leading-[1.7] text-text-light-bg md:text-lg">That instinct kept showing up. Growth roles at startups, two summers in investment banking, a deep dive into healthcare IT where I managed large-scale projects and built service lines from scratch. The problems that pulled me in were never technical to begin with. They were operational gaps with technical solutions. What a business needed versus what it actually had the infrastructure to do. Today I run Constance IT, building AI-powered workflow automation and managed IT services for small and medium-sized businesses. Enterprises have consultancies and custom AI tools for this. Most SMBs don't, and that's where Constance IT comes in.</p>
+            <p class="font-body text-base leading-[1.7] text-text-light-bg md:text-lg">When I'm not building, I'm watching Formula One. I picked that up around four years old, watching races in my grandparents' basement in Germany. Some things stay with you, no matter how often you move.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Section 5: Testimonials -->
-    <section class="testimonials" id="testimonials">
-      <div class="section-container">
-        <h2 class="section-label section-label--dark">What People Say</h2>
+    <section class="testimonials bg-gradient-to-b from-dark-base via-[#111C32] to-dark-base mt-[-40px] pt-[calc(80px+40px)] pb-3xl" id="testimonials">
+      <div class="w-full max-w-[1200px] mx-auto px-md">
+        <h2 class="section-label font-body font-semibold text-sm uppercase tracking-[1.5px] text-accent mb-md md:text-center md:text-[15px]">What People Say</h2>
 
-        <div class="testimonial-cards">
+        <div class="flex flex-col gap-md md:grid md:grid-cols-3 md:gap-md">
 
-          <blockquote class="testimonial-card testimonial-card--featured">
-            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-            <p>Max doesn't just identify opportunities. He creates them.</p>
-            <cite>
-              <span class="cite-name">Dale Calvin</span>
-              <span class="cite-role">CEO, Integrity Healthcare IT Solutions</span>
+          <blockquote class="testimonial-card relative bg-white/[0.04] border border-white/[0.06] rounded-xl p-lg transition-all duration-300 md:col-span-3 md:text-center md:max-w-[600px] md:mx-auto md:mb-sm md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(0,0,0,0.2)] md:hover:border-[rgba(46,196,182,0.12)]">
+            <span class="absolute top-4 left-6 font-heading text-5xl font-bold text-accent opacity-15 leading-none pointer-events-none" aria-hidden="true">&ldquo;</span>
+            <p class="font-body text-base font-light italic leading-[1.7] text-text-dark-bg mb-sm pt-xs md:text-lg md:text-[22px]">Max doesn't just identify opportunities. He creates them.</p>
+            <cite class="flex flex-col not-italic">
+              <span class="font-heading font-semibold text-sm text-white">Dale Calvin</span>
+              <span class="font-body text-[13px] text-text-muted-dark">CEO, Integrity Healthcare IT Solutions</span>
             </cite>
           </blockquote>
 
-          <blockquote class="testimonial-card">
-            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-            <p>He's a gifted student, efficient worker, and able to understand and navigate complex deals with little outside input. He is honest, dependable, and incredibly hardworking.</p>
-            <cite>
-              <span class="cite-name">Euan Rellie</span>
-              <span class="cite-role">Managing Partner, BDA Partners</span>
+          <blockquote class="testimonial-card relative bg-white/[0.04] border border-white/[0.06] rounded-xl p-lg transition-all duration-300 md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(0,0,0,0.2)] md:hover:border-[rgba(46,196,182,0.12)]">
+            <span class="absolute top-4 left-6 font-heading text-5xl font-bold text-accent opacity-15 leading-none pointer-events-none" aria-hidden="true">&ldquo;</span>
+            <p class="font-body text-base font-light italic leading-[1.7] text-text-dark-bg mb-sm pt-xs md:text-lg">He's a gifted student, efficient worker, and able to understand and navigate complex deals with little outside input. He is honest, dependable, and incredibly hardworking.</p>
+            <cite class="flex flex-col not-italic">
+              <span class="font-heading font-semibold text-sm text-white">Euan Rellie</span>
+              <span class="font-body text-[13px] text-text-muted-dark">Managing Partner, BDA Partners</span>
             </cite>
           </blockquote>
 
-          <blockquote class="testimonial-card">
-            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-            <p>Max is quick to identify problems, proactive about communicating about them and eager to play a role in solving them. These three qualities are rare for a young person.</p>
-            <cite>
-              <span class="cite-name">Jack Saltzman</span>
-              <span class="cite-role">Growth &amp; Operations, Saturn Technologies</span>
+          <blockquote class="testimonial-card relative bg-white/[0.04] border border-white/[0.06] rounded-xl p-lg transition-all duration-300 md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(0,0,0,0.2)] md:hover:border-[rgba(46,196,182,0.12)]">
+            <span class="absolute top-4 left-6 font-heading text-5xl font-bold text-accent opacity-15 leading-none pointer-events-none" aria-hidden="true">&ldquo;</span>
+            <p class="font-body text-base font-light italic leading-[1.7] text-text-dark-bg mb-sm pt-xs md:text-lg">Max is quick to identify problems, proactive about communicating about them and eager to play a role in solving them. These three qualities are rare for a young person.</p>
+            <cite class="flex flex-col not-italic">
+              <span class="font-heading font-semibold text-sm text-white">Jack Saltzman</span>
+              <span class="font-body text-[13px] text-text-muted-dark">Growth &amp; Operations, Saturn Technologies</span>
             </cite>
           </blockquote>
 
-          <blockquote class="testimonial-card">
-            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-            <p>His positive impact to our company's product roadmap and client engagement procedures are still being felt today.</p>
-            <cite>
-              <span class="cite-name">Terry Guo</span>
-              <span class="cite-role">President &amp; Chief Product Officer, LotusFlare</span>
+          <blockquote class="testimonial-card relative bg-white/[0.04] border border-white/[0.06] rounded-xl p-lg transition-all duration-300 md:hover:-translate-y-0.5 md:hover:shadow-[0_12px_32px_rgba(0,0,0,0.2)] md:hover:border-[rgba(46,196,182,0.12)]">
+            <span class="absolute top-4 left-6 font-heading text-5xl font-bold text-accent opacity-15 leading-none pointer-events-none" aria-hidden="true">&ldquo;</span>
+            <p class="font-body text-base font-light italic leading-[1.7] text-text-dark-bg mb-sm pt-xs md:text-lg">His positive impact to our company's product roadmap and client engagement procedures are still being felt today.</p>
+            <cite class="flex flex-col not-italic">
+              <span class="font-heading font-semibold text-sm text-white">Terry Guo</span>
+              <span class="font-body text-[13px] text-text-muted-dark">President &amp; Chief Product Officer, LotusFlare</span>
             </cite>
           </blockquote>
 
@@ -409,18 +446,18 @@
     </section>
 
     <!-- Section 6: Contact / Footer -->
-    <section class="contact" id="contact">
-      <div class="section-container contact-content">
-        <h2 class="contact-headline">Let's Talk</h2>
-        <p class="contact-subtext">Whether you're a recruiter, a potential collaborator, or just want to say hello, I'd like to hear from you.</p>
-        <a href="mailto:max@constanceit.com" class="btn-primary contact-email">max@constanceit.com</a>
-        <div class="contact-links">
-          <a href="https://linkedin.com/in/maxgregori" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://constanceit.com" target="_blank" rel="noopener noreferrer">Constance IT</a>
+    <section class="contact relative bg-dark-base pt-3xl pb-lg" id="contact">
+      <div class="contact-content w-full max-w-[1200px] mx-auto px-md text-center pb-3xl">
+        <h2 class="contact-headline font-heading font-bold text-4xl text-text-dark-bg mb-sm md:text-5xl">Let's Talk</h2>
+        <p class="contact-subtext font-body text-base leading-relaxed text-text-muted-dark max-w-[480px] mx-auto mb-lg md:text-lg">Whether you're a recruiter, a potential collaborator, or just want to say hello, I'd like to hear from you.</p>
+        <a href="mailto:max@constanceit.com" class="contact-email btn-primary inline-block font-heading font-semibold text-base bg-accent text-dark-base px-lg py-[14px] rounded-lg min-h-[48px] text-center relative overflow-hidden z-[1] transition-transform duration-200 hover:-translate-y-px mb-md">max@constanceit.com</a>
+        <div class="contact-links flex justify-center gap-lg">
+          <a href="https://linkedin.com/in/maxgregori" target="_blank" rel="noopener noreferrer" class="font-body text-sm text-text-muted-light p-xs min-h-[48px] inline-flex items-center transition-colors duration-200 hover:text-accent">LinkedIn</a>
+          <a href="https://constanceit.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm text-text-muted-light p-xs min-h-[48px] inline-flex items-center transition-colors duration-200 hover:text-accent">Constance IT</a>
         </div>
       </div>
-      <footer class="site-footer">
-        <p>Built by Max Gregori · 2026</p>
+      <footer class="text-center pt-lg border-t border-white/[0.06]">
+        <p class="font-body text-[13px] text-text-body-muted">Built by Max Gregori · 2026</p>
       </footer>
     </section>
 

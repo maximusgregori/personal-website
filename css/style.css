@@ -315,6 +315,128 @@ html {
 .hero-headline .word { display: inline-block; }
 
 /* ============================================
+   Project card workflow diagrams
+   ============================================ */
+.card-diagram {
+  width: 100%;
+  padding: 4px 0 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.project-diagram {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+}
+
+.project-diagram .node-bg {
+  fill: #1E293B;
+}
+
+.project-diagram .node-bg-accent {
+  fill: #0F172A;
+  stroke: #2EC4B6;
+  stroke-width: 1.5;
+}
+
+.project-diagram .node-label {
+  fill: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.project-diagram .connector {
+  stroke: #2EC4B6;
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.6;
+  stroke-linecap: round;
+}
+
+.project-diagram .dot {
+  fill: #2EC4B6;
+}
+
+/* On the light Projects section: invert so nodes read on white */
+.project-card .project-diagram .node-bg {
+  fill: #F0F4F8;
+  stroke: #CBD5E1;
+  stroke-width: 1;
+}
+
+.project-card .project-diagram .node-bg-accent {
+  fill: #EFF6FF;
+  stroke: #2EC4B6;
+  stroke-width: 1.5;
+}
+
+.project-card .project-diagram .node-label {
+  fill: #1E293B;
+}
+
+.project-card .project-diagram .connector {
+  stroke: #2EC4B6;
+  opacity: 0.7;
+}
+
+/* ============================================
+   Dark-section dot-grid texture
+   The journey/testimonials gradient is moved here from Tailwind so the
+   dot pattern can layer on top of the linear gradient cleanly.
+   ============================================ */
+.hero {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.journey {
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(180deg, #0F172A 0%, #111C32 50%, #0F172A 100%);
+}
+
+.testimonials {
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(180deg, #0F172A 0%, #111C32 50%, #0F172A 100%);
+}
+
+.contact {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ============================================
+   Globe atmospheric glow (CSS layer behind canvas)
+   ============================================ */
+.journey-map {
+  position: relative;
+}
+
+.journey-map::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(46, 196, 182, 0.08) 0%, rgba(46, 196, 182, 0.03) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.journey-map canvas {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================
    Reduced motion
    ============================================ */
 @media (prefers-reduced-motion: reduce) {

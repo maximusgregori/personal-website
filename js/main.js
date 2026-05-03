@@ -303,6 +303,12 @@
       var rotationTarget = { y: globeGroup.rotation.y, x: globeGroup.rotation.x };
       var isAnimatingToTarget = false;
 
+      /* Pins populated after TopoJSON fetch — declared here so the render
+         loop can pulse them once they exist. */
+      var pinMeshes = [];
+      var pulseTime = 0;
+      var idleSpeed = 0.0008;
+
       /* Drag-to-rotate (mouse) */
       var isDragging = false;
       var previousMousePosition = { x: 0, y: 0 };
@@ -352,7 +358,7 @@
           var lineMaterial = new THREE.LineBasicMaterial({
             color: 0xffffff,
             transparent: true,
-            opacity: 0.15
+            opacity: 0.10
           });
 
           countries.features.forEach(function (feature) {
@@ -376,8 +382,7 @@
             });
           });
 
-          /* Pins — all visible on load */
-          var pinMeshes = [];
+          /* Pins — all visible on load (pinMeshes declared in outer scope) */
           var pinMaterial = new THREE.MeshBasicMaterial({ color: 0x2EC4B6 });
           var pinGeometry = new THREE.SphereGeometry(0.02, 16, 16);
 
@@ -487,6 +492,16 @@
             globeGroup.rotation.x = rotationTarget.x;
             isAnimatingToTarget = false;
           }
+        } else if (!isDragging && !prefersReducedMotion) {
+          globeGroup.rotation.y += idleSpeed;
+        }
+
+        if (!prefersReducedMotion && pinMeshes.length) {
+          pulseTime += 0.02;
+          for (var p = 0; p < pinMeshes.length; p++) {
+            var phase = pulseTime + p * 0.7;
+            pinMeshes[p].scale.setScalar(1 + Math.sin(phase) * 0.15);
+          }
         }
 
         renderer.render(scene, camera);
@@ -496,6 +511,45 @@
 
     requestAnimationFrame(function () {
       setTimeout(function () { waitForThreeAndInit(5); }, 100);
+    });
+  }
+
+  /* ----------------------------------------
+     Project Diagram Animations (line-draw + node pop-in)
+     ---------------------------------------- */
+  if (!prefersReducedMotion) {
+    document.querySelectorAll('.project-diagram').forEach(function (svg) {
+      var paths = svg.querySelectorAll('.connector');
+      var nodes = svg.querySelectorAll('.node-bg, .node-bg-accent');
+      var labels = svg.querySelectorAll('.node-label');
+      var dots = svg.querySelectorAll('.dot');
+
+      paths.forEach(function (path) {
+        var length = path.getTotalLength();
+        path.style.strokeDasharray = length;
+        path.style.strokeDashoffset = length;
+      });
+
+      gsap.set(nodes, { opacity: 0, scale: 0.8, transformOrigin: 'center center' });
+      gsap.set(labels, { opacity: 0 });
+      gsap.set(dots, { opacity: 0, scale: 0 });
+
+      var tl = gsap.timeline({
+        scrollTrigger: { trigger: svg, start: 'top 85%', once: true }
+      });
+
+      tl.to(nodes, {
+        opacity: 1, scale: 1, duration: 0.4, stagger: 0.08, ease: 'power2.out'
+      })
+      .to(paths, {
+        strokeDashoffset: 0, duration: 0.6, stagger: 0.12, ease: 'power2.inOut'
+      }, '-=0.2')
+      .to(labels, {
+        opacity: 1, duration: 0.3, stagger: 0.05
+      }, '-=0.4')
+      .to(dots, {
+        opacity: 1, scale: 1, duration: 0.3, stagger: 0.05, ease: 'back.out(2)'
+      }, '-=0.3');
     });
   }
 
